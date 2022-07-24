@@ -1,0 +1,156 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--零售单小票打印-->
+<link rel="stylesheet" href="/skin/css/main/public_print.css" type="text/css" media="all" />
+<script language="javascript" src="/skin/js/public/base64.js"></script>
+<script language="javascript" src="/skin/js/public/LodopFuncs.js"></script>
+<div class="print_tip">
+    <span>如您需要定制打印样式,请参照以下说明操作</span>
+    <ul>
+        <li>1.在线打印及设计需安装扩展程序，您可点击下方按钮，然后按照提示安装即可</li>
+        <li>2.系统在初始化时已经带有打印样式，如不满足您的实际需求，请点击设计报表后保存即可</li>
+        <li>3.当前小票默认纸张为58mm，除表格内容外的元素均可修改</li>
+        <li>4.如您在设计单据的过程中误操作导致表格样式错乱，您可点击下方恢复默认按钮即可恢复</li>
+        <li>5.请使用谷歌内核浏览器或IE11以上版本，360浏览器、腾讯浏览器等请开启急速模式</li>
+        <li>6.如您在设计报表样式中遇到问题，可到<a href="https://www.nodcloud.com" target="_blank">点可云软件中心</a>寻求解决方案</li>
+        <li>7.在线打印及设计需安装扩展程序，您可点击下方按钮，然后按照提示安装即可</li>
+    </ul>
+    <p>
+        <button class="layui-btn layui-btn-normal" onclick="print()">打印报表</button>
+        <button class="layui-btn" onclick="edit()">设计报表</button>
+        <button class="layui-btn layui-btn-primary" onclick="re_view()">恢复默认</button>
+    </p>
+</div>
+<div id="box">
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 98px;text-align:left;">名称</th>
+                <th style="width: 30px;">数量</th>
+                <th style="width: 30px;">金额</th>
+            </tr>
+        </thead>
+        {volist name="info" id="vo"}
+            <tr>
+                <td style="text-align:left;">{$vo.room.info.goods.info.name}</td>
+                <td>{$vo.nums}</td>
+                <td>{$vo.total}</td>
+            </tr>
+        {/volist}
+    </table>
+    <style type="text/css" media="all">table{font-size:12px;color:#333;}table th{border-width:1px;}table td{text-align:center;border-width:1px;background-color:#fff}</style>
+</div>
+<script type="text/javascript" charset="utf-8">
+    //打印配置
+    var LODOP;
+    var customer = '{$class.customer.info.name}'; //客户名称
+    var alt_integral = '{$class.customer.info.integral}'; //客户总积分
+    var time ='{$class.time}'; //单据时间
+    var number ='{$class.number}';//单据编号
+    var total = '{$class.total}';//单据金额
+    var discount = '{$class.discount}';//优惠金额
+    var integral = '{$class.integral}';//本次积分
+    var money = '{$class.money}';//实收金额
+    var user = '{$class.user.info.name}';//制单人
+    var account = '{$class.account.info.name}';//结算账户
+    var data = '{$class.data}';//备注信息
+    var html_table =$('#box').html(); //表格内容
+    var html_height =($('#box').height()-0)+30; //表格高度
+    var print_text="{$printcode.paper2}";//小票58mm模板代码-使用2等分字段
+    var paper_type='paper2';//纸张类型
+    //打印报表
+    function print(){
+        LODOP=getLodop();
+        eval(Base64.decode(print_text));
+        LODOP.PREVIEW();
+    };
+    
+    //修改模板
+    function edit(){
+        LODOP=getLodop();
+        LODOP.PRINT_INITA(0,0,"181px",(html_height+300)+"px","零售单 - 打印");
+        LODOP.SET_PRINT_PAGESIZE(3,'48mm',0,"");//高度自适应
+        LODOP.PRINT_INITA(0,0,"210mm","296.99mm","购货单 - 打印");
+        LODOP.SET_PRINT_PAGESIZE(1,2100,2970,"");
+        eval(Base64.decode(print_text));
+        LODOP.SET_SHOW_MODE("HIDE_PBUTTIN_SETUP",true);
+        LODOP.SET_SHOW_MODE("HIDE_ABUTTIN_SETUP",true);
+        if (LODOP.CVERSION) CLODOP.On_Return=function(TaskID,Value){
+            layui.use('layer', function() {
+                layer.confirm('是否启用新模板？', {
+                    btn: ['启用', '取消'], //按钮
+                    offset: '12%'
+                }, function() {
+                    //反设置函数
+                    var value_arr=Value.split("\r\n"); //字符分割
+                    var tab_check=false;
+                    for (var i = 0; i < value_arr.length; i++) {
+                        if(value_arr[i].indexOf('PRINT_INITA')>0){
+                            //设置设计页面尺寸
+                            //取出现有高度
+                            var tmp_arr=value_arr[i].split(","); //字符分割
+                            tmp_arr[3]='(html_height+'+(tmp_arr[3]-html_height)+')+"px"';
+                            value_arr[i]=tmp_arr.join(",");
+                        }else if(value_arr[i].indexOf('ADD_PRINT_TABLE')>0){
+                            //设置表格高度
+                            var tmp_arr=value_arr[i].split(","); //字符分割
+                            tmp_arr[3]='html_height';
+                            value_arr[i]=tmp_arr.join(",");
+                            tab_check=true;
+                        }else if(tab_check && value_arr[i].indexOf('ADD_PRINT_LINE')>0){
+                            //设置表格后的线条
+                            var tmp_arr=value_arr[i].split(","); //字符分割
+                            var tmp_val=tmp_arr[0].match(/[0-9]+/);//获取第一个的数值
+                            var tml_cha=tmp_val[0]-html_height;
+                            tmp_arr[0]='LODOP.ADD_PRINT_LINE((html_height+'+tml_cha+')';//线条第一个数值
+                            tmp_arr[2]='(html_height+'+(tml_cha+1)+')';//线条第三个数值
+                            value_arr[i]=tmp_arr.join(",");
+                        }else if(tab_check && value_arr[i].indexOf('ADD_PRINT_TEXT')>0){
+                            //设置表格后的元素
+                            var tmp_arr=value_arr[i].split(","); //字符分割
+                            var tmp_val=tmp_arr[0].match(/[0-9]+/);//获取第一个的数值
+                            var tml_cha=tmp_val[0]-html_height;
+                            tmp_arr[0]='LODOP.ADD_PRINT_TEXT((html_height+'+tml_cha+')';//TOP数值第一个数值
+                            value_arr[i]=tmp_arr.join(",");
+                        }
+                    }
+                    var regcode = new RegExp(";,","g");//g,表示全部替换。
+                    print_text=Base64.encode(value_arr.join(",").replace(regcode,';'));//赋值新模板
+                    $.post("/index/service/save_printcode", {"name": "cashiermin","type": 'paper2',"main":print_text}, function(re) {
+                        if(re="success"){
+                            dump('模板保存成功');
+                        }else{
+                            alert_info('服务器响应超时!');
+                        }
+                    });
+                });
+            });
+        };
+        LODOP.PRINT_DESIGN();
+    };
+    //恢复默认
+    function re_view(){
+        layui.use('layer', function() {
+            layer.confirm('您确定要恢复默认模板？', {
+                btn: ['确定', '取消'], //按钮
+                offset: '12%'
+            }, function() {
+                $.post("/index/service/default_printcode", {"name": "cashiermin","type": paper_type}, function(re) {
+                    if(re="success"){
+                        alert_info('恢复默认模板成功');
+                    }else{
+                        alert_info('服务器响应超时!');
+                    }
+                });
+            });
+        });
+    }
+    
+    $(function(){
+        var auto_print={$Think.get.auto|default='false'};//自动打印
+        if(auto_print){
+            setTimeout('print()',666);
+        }
+    });
+</script>
+{/block}

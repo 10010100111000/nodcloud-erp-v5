@@ -1,0 +1,69 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--日志-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+		<table>
+			<tr>
+			    <td style="display:none;">
+					<input type="text"  id="so|id" value="{$Think.get.id}" >
+				</td>
+				<td>
+					<input type="text" class="layui-input" id="so|start_time" placeholder="开始日期" >
+				</td>
+				<td>
+				    <input type="text" class="layui-input" id="so|end_time" placeholder="结束日期">
+				</td>
+				<td>
+					<select id="so|type" class="layui-input">
+                        <option value="0">单据类型</option>
+            		    <option value="1">购货对账单</option>
+            		    <option value="2">销货对账单</option>
+            		    <option value="3">购货退货对账单</option>
+            		    <option value="4">销货退货对账单</option>
+            		    <option value="5">收款单</option>
+            		    <option value="6">付款单</option>
+            		    <option value="7">其他收入单</option>
+            		    <option value="8">其他支出单</option>
+            		    <option value="9">零售单收款</option>
+            		    <option value="10">零售退货单</option>
+            		    <option value="11">采购入库单</option>
+            		    <option value="12">服务订单</option>
+            		    <option value="13">资金调拨单-出</option>
+            		    <option value="14">资金调拨单-入</option>
+            		</select>
+				</td>
+				<td>
+					<select id="so|set" class="layui-input">
+                        <option value="0">资金操作</option>
+            		    <option value="1">资金减少</option>
+            		    <option value="2">资金增加</option>
+            		</select>
+				</td>
+				<td>
+					<select id="so|user" class="layui-input" lay-search>
+                        <option value="0">操作用户</option>
+            		    {volist name="user" id="user_vo"}
+            		        <option value="{$user_vo.id}">{$user_vo.name}</option>
+            		    {/volist}
+            		</select>
+				</td>
+				<td class="re_left">
+				    <button class="layui-btn layui-btn-primary" onclick="so()" style="margin:0"><i class="layui-icon">&#xe615;</i></button>
+		        </td>
+			</tr>
+		</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="tmp_re();">刷新</button>
+        <button class="layui-btn layui-btn-normal"  onclick="export_data();">导出</button>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+<hr />
+<table id="ape_table"></table>
+<script src="/skin/js/main/public_report.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/account_form.js" type="text/javascript" charset="utf-8"></script>
+{/block}

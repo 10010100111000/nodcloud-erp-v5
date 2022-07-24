@@ -1,0 +1,85 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--库存查询-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/public/zTreeStyle.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+		<table>
+    			<tr>
+    			    <td>
+    					<input type="text" class="layui-input" id="so|name" placeholder="商品名称">
+    				</td>
+    			    <td>
+    					<input type="text" class="layui-input" id="so|number" placeholder="商品编号">
+    				</td>
+                    <td>
+    					<select id="so|warehouse" class="layui-input" lay-search>
+                            <option value="0">所属仓库</option>
+                		    {volist name="warehouse" id="warehouse_vo"}
+                		        <option value="{$warehouse_vo.id}">{$warehouse_vo.name}</option>
+                		    {/volist}
+                		</select>
+    				</td>
+    				<td>
+    				    <div style="position: relative;">
+    				        <input type="text" id="so|class" placeholder="请选择商品分类" value="全部分类" class="layui-input " onClick="$(this).next().show();" ape="{$Think.get.class}">
+    						<div class="ape_select">
+    							<ul id="so_class_info" class="ztree"></ul>
+    						</div>
+    				    </div>
+    				</td>
+    				<td class="re_left">
+    				    <button class="layui-btn layui-btn-primary" onclick="more(this)" ape="hide"><i class="layui-icon">&#xe61a;</i></button>
+    				    <button class="layui-btn layui-btn-primary" onclick="so()" style="margin:0"><i class="layui-icon">&#xe615;</i></button>
+    		        </td>
+    			</tr>
+    			<tr style="display:none">
+    				<td>
+    					<input type="text" class="layui-input" id="so|spec" placeholder="规格型号">
+    				</td>
+    				<td>
+    					<input type="text" class="layui-input" id="so|location" placeholder="商品货位">
+    				</td>
+    				<td>
+    					<select id="so|unit" class="layui-input" lay-search>
+                            <option value="0">商品单位</option>
+                		    {volist name="unit" id="unit_vo"}
+                		        <option value="{$unit_vo.id}">{$unit_vo.name}</option>
+                		    {/volist}
+                		</select>
+    				</td>
+    				<td>
+    					<select id="so|brand" class="layui-input" lay-search>
+                            <option value="0">所属品牌</option>
+                		    {volist name="brand" id="brand_vo"}
+                		        <option value="{$brand_vo.id}">{$brand_vo.name}</option>
+                		    {/volist}
+                		</select>
+    				</td>
+    				<td>
+    					<select id="so|eye" class="layui-input" lay-search>
+    					    <option value="0">不显示零库存</option>
+                            <option value="1">显示零库存</option>
+                		</select>
+    				</td>
+    		</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-primary" onclick="ape_set_tabinfo(tabinfo);"><i class="layui-icon">&#xe614;</i></button>
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        <button class="layui-btn layui-btn-danger" onclick="export_data();">导出</button>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script type="text/javascript" charset="utf-8">
+var goodsclass_arr = {php}echo json_encode(goodsclass_arr(true,'全部分类'),true); {/php};
+var tabinfo={php}echo tabinfo('room');{/php};
+var batch_type={empty name="sys.info.batch"}false{else/}true{/empty};
+var serial_type={empty name="sys.info.serial"}false{else/}true{/empty};
+</script>
+<script src="/skin/js/public/ztree.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/room.js" type="text/javascript" charset="utf-8"></script>
+{/block}

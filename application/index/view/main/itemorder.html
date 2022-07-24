@@ -1,0 +1,166 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--收款单-->
+<link rel="stylesheet" href="/skin/css/public/ui.jqgrid.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/public/jquery-ui.min.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/main/public_form.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/public/zTreeStyle.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/public/select2.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="form_info layui-form layui-form-pane">
+        <div class="layui-form-item" style="margin-left: 0;">
+            <label class="layui-form-label">客户</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" id="customer" placeholder="请点击选择" readonly="true" onclick="set_customer(this)" ape=''>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单据日期</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" id="time" placeholder="单据日期" value="{php}echo date('Y-m-d',time());{/php}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单据编号</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" id="number" placeholder="单据编号" value="{php}echo get_number('itemorder');{/php}">
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div class="set_btn">
+        {empty name="Think.get.id"}
+            <button class="layui-btn layui-btn-normal" onclick="save(this);">提交单据</button>
+        {else/}
+                {empty name="class.type.ape"}
+                    {if condition="(check_root('itemorder_edit'))"}
+                        <button class="layui-btn layui-btn-normal" onclick="save(this,'{$Think.get.id}');">保存单据</button>
+                    {/if}
+                    {if condition="(check_root('itemorder_auditing'))"}    
+                        <button class="layui-btn layui-btn-primary" onclick="auditing('{$Think.get.id}',true);">审核单据</button>
+                    {/if}
+                {else/}
+                    {if condition="(check_root('itemorder_auditing'))"}
+                        <button class="layui-btn layui-btn-primary" onclick="auditing('{$Think.get.id}',false);">反审核单据</button>
+                    {/if}    
+                {/empty}
+        {/empty}
+        <button class="layui-btn" onclick="ape_re();">重新载入</button>
+    </div>
+</div>
+<hr />
+<div class="table_info">
+    <table id="table"></table>
+</div>
+<div class="table_more layui-form layui-form-pane">
+    <table class="more_info">
+        <tr>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单据金额</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="total" placeholder="单据金额" class="layui-input" disabled="disabled">
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">优惠金额</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="discount" placeholder="请输入优惠金额" class="layui-input" value="0" onBlur="cal_money();">
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">实收金额</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="money" placeholder="请输入实收金额" class="layui-input">
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">制单人</label>
+                    <div class="layui-input-block">
+                        <select id="user" class="layui-input" lay-search>
+                		    {volist name="user" id="user_vo"}
+                                <option value="{$user_vo.id}">{$user_vo.name}</option>
+                            {/volist}
+                		</select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">结算账户</label>
+                    <div class="layui-input-block">
+                        <select id="account" class="layui-input" lay-search>
+                            <option value="">请选择结算账户</option>
+                		    {volist name="account" id="account_vo"}
+                                <option value="{$account_vo.id}">{$account_vo.name}</option>
+                            {/volist}
+                		</select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" id="up_btn">上传附件</label>
+                    <div class="layui-input-block">
+                        <span class="layui-input" id="file" ape="0">未上传</span>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注信息</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="data" placeholder="请输入备注信息" class="layui-input">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript" charset="utf-8">
+    var auditing_type='{$class.type.ape|default='0'}';
+    var item_arr={php}echo item_arr();{/php};
+    $('#user').val('{$Think.session.is_user_id}');
+    {empty name="sys.info.user_choose"}$('#user').attr('disabled',true);{/empty}
+    {notempty name="sys.info.default_account"}$('#account').val('{$sys.info.default_account}');{/notempty}
+</script>
+<script src="/skin/js/public/grid.locale-cn.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/public/jqGrid.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/public_tab.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/item_info_list.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/itemorder_tab.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/itemorder.js" type="text/javascript" charset="utf-8"></script>
+{notempty name="Think.get.id"}
+    <script type="text/javascript" charset="utf-8">
+        $('#customer').attr('ape','{$class.customer.ape}').val('{$class.customer.info.name}');
+        $('#time').val('{$class.time}');
+        $('#number').val('{$class.number}');
+        $('#total').val('{$class.total}');
+        $('#discount').val('{$class.discount}');
+        $('#money').val('{$class.money}');
+        $('#user').val('{$class.user.ape}');
+        $('#account').val('{$class.account.ape}');
+        {notempty name="class.file"}
+            $('#file').html('已上传').attr('ape','{$class.file}');
+        {/notempty}
+        $('#data').val('{$class.data}');
+        add_item({php}echo json_encode($info);{/php},false);
+        if(auditing_type!=='1'){
+            check_tab();//未审核状态检查表格
+        }
+        cal_default_rows();
+    </script>
+{/notempty}
+
+
+{/block}

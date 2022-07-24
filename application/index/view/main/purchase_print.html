@@ -1,0 +1,155 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--购货单打印-->
+<link rel="stylesheet" href="/skin/css/main/public_print.css" type="text/css" media="all" />
+<script language="javascript" src="/skin/js/public/base64.js"></script>
+<script language="javascript" src="/skin/js/public/LodopFuncs.js"></script>
+<div class="print_tip">
+    <span>如您需要定制打印样式,请参照以下说明操作</span>
+    <ul>
+        <li>1.在线打印及设计需安装扩展程序，您可点击下方按钮，然后按照提示安装即可</li>
+        <li>2.系统在初始化时已经带有打印样式，如不满足您的实际需求，请点击设计报表后保存即可</li>
+        <li>3.默认纸张可在系统设置中选择，表格数据内容会自动分页，除表格内容外的元素均可修改</li>
+        <li>4.如您在设计单据的过程中误操作导致表格样式错乱，您可点击下方恢复默认按钮即可恢复</li>
+        <li>5.请使用谷歌内核浏览器或IE11以上版本，360浏览器、腾讯浏览器等请开启急速模式</li>
+        <li>6.如您在设计报表样式中遇到问题，可到<a href="https://www.nodcloud.com" target="_blank">点可云软件中心</a>寻求解决方案</li>
+        <li>7.在线打印及设计需安装扩展程序，您可点击下方按钮，然后按照提示安装即可</li>
+    </ul>
+    <p>
+        <button class="layui-btn layui-btn-normal" onclick="print()">打印报表</button>
+        <button class="layui-btn" onclick="edit()">设计报表</button>
+        <button class="layui-btn layui-btn-primary" onclick="re_view()">恢复默认</button>
+    </p>
+</div>
+<div id="box">
+    <table>
+        <thead>
+            <tr>
+                <th ape="name">商品名称</th>
+                <th ape="attr">辅助属性</th>
+                <th ape="warehouse">所入仓库</th>
+                <th ape="brand">商品品牌</th>
+                <th ape="number">商品编号</th>
+                <th ape="class">商品分类</th>
+                <th ape="spec">规格型号</th>
+                <th ape="code">条形码</th>
+                <th ape="unit">商品单位</th>
+                <th ape="stocktip">库存预警</th>
+                <th ape="location">商品货位</th>
+                <th ape="integral">赠送积分</th>
+                <th ape="serial">商品串码</th>
+                <th ape="nums">数量</th>
+                <th ape="price">购货单价</th>
+                <th ape="total">购货金额</th>
+                <th ape="batch">商品批次</th>
+                <th ape="data">备注信息</th>
+            </tr>
+        </thead>
+        {volist name="info" id="vo"}
+            <tr>
+                <td>{$vo.goods.info.name}</td>
+                <td>{$vo.attr.name}</td>
+                <td>{$vo.warehouse.info.name}</td>
+                <td>{$vo.goods.info.brand.info.name}</td>
+                <td>{$vo.goods.info.number}</td>
+                <td>{$vo.goods.info.class.info.name}</td>
+                <td>{$vo.goods.info.spec}</td>
+                <td>{$vo.goods.info.code}</td>
+                <td>{$vo.goods.info.unit.info.name}</td>
+                <td>{$vo.goods.info.stocktip}</td>
+                <td>{$vo.goods.info.location}</td>
+                <td>{$vo.goods.info.integral}</td>
+                <td>{php}echo implode('<br/>',explode(',',$vo['serial']));{/php}</td>
+                <td>{$vo.nums}</td>
+                <td>{$vo.price}</td>
+                <td>{$vo.total}</td>
+                <td>{$vo.batch}</td>
+                <td>{$vo.data}</td>
+            </tr>
+        {/volist}
+    </table>
+    <style type="text/css" media="all">table{width:100%;margin: 0 auto;font-size:12px;color:#333;border-width:1px;border-color:#666;border-collapse:collapse}table th{border-width:1px;padding:8px;border-style:solid;border-color:#666;}table td{text-align:center;border-width:1px;padding:8px;border-style:solid;border-color:#666;background-color:#fff}</style>
+</div>
+<script type="text/javascript" charset="utf-8">
+    //获取表格显示项目
+    var tabinfo={php}echo tabinfo('purchase');{/php};
+    run_set_tabinfo('#box',tabinfo);//预处理
+    var batch_type={empty name="sys.info.batch"}false{else/}true{/empty};
+    var serial_type={empty name="sys.info.serial"}false{else/}true{/empty};
+    if(!serial_type){
+        run_sys_tabinfo('#box','serial');//单据功能设置-串码
+    }
+    if(!batch_type){
+        run_sys_tabinfo('#box','batch');//单据功能设置-批次
+    }
+    //打印配置
+    var LODOP;
+    var supplier = '{$class.supplier.info.name}'; //供应商名称
+    var time ='{$class.time}'; //单据时间
+    var number ='{$class.number}';//单据编号
+    var total = '{$class.total}';//单据金额
+    var actual = '{$class.actual}';//实际金额
+    var money = '{$class.money}';//实付金额
+    var user = '{$class.user.info.name}';//制单人
+    var account = '{$class.account.info.name}';//结算账户
+    var data = '{$class.data}';//备注信息
+    var html_table =$('#box').html(); //表格内容
+    {empty name="sys.info.default_print"}
+        <!--A4-->
+        var print_text="{$printcode.paper4}"//A4模板代码
+        var paper_type='paper4';//纸张类型
+    {else/}
+        <!--2等分-->
+        var print_text="{$printcode.paper2}"//2等分模板代码
+        var paper_type='paper2';//纸张类型
+    {/empty}
+    //打印报表
+    function print(){
+        LODOP=getLodop();
+        eval(Base64.decode(print_text));
+        LODOP.PREVIEW();
+    };
+    //修改模板
+    function edit(){
+        LODOP=getLodop();
+        eval(Base64.decode(print_text));
+        LODOP.SET_SHOW_MODE("HIDE_PBUTTIN_SETUP",true);
+        LODOP.SET_SHOW_MODE("HIDE_ABUTTIN_SETUP",true);
+        if (LODOP.CVERSION) CLODOP.On_Return=function(TaskID,Value){
+            layui.use('layer', function() {
+                layer.confirm('是否启用新模板？', {
+                    btn: ['启用', '取消'], //按钮
+                    offset: '12%'
+                }, function() {
+                    print_text=Base64.encode(Value);//赋值新模板
+                    $.post("/index/service/save_printcode", {"name": "purchase","type": paper_type,"main":print_text}, function(re) {
+                        if(re="success"){
+                            dump('模板保存成功');
+                        }else{
+                            alert_info('服务器响应超时!');
+                        }
+                    });
+                });
+            });
+        };
+        LODOP.PRINT_DESIGN();
+    };
+    //恢复默认
+    function re_view(){
+        layui.use('layer', function() {
+            layer.confirm('您确定要恢复默认模板？', {
+                btn: ['确定', '取消'], //按钮
+                offset: '12%'
+            }, function() {
+                $.post("/index/service/default_printcode", {"name": "purchase","type": paper_type}, function(re) {
+                    if(re="success"){
+                        alert_info('恢复默认模板成功');
+                    }else{
+                        alert_info('服务器响应超时!');
+                    }
+                });
+            });
+        });
+    }
+</script>
+{/block}

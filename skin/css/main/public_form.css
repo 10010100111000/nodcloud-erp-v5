@@ -1,0 +1,79 @@
+.operation{
+    padding: 2px 0px;
+}
+.re_padding{
+    padding: 8px;
+}
+.form_info .layui-form-item{
+    float: left;
+    width: 22%;
+    margin-left: 1%;
+    margin-bottom: 0;
+    clear: none;
+}
+.set_btn{
+    position: fixed;
+    top: 0;
+    right: 25px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 0px 0px 3px 3px;
+    padding: 8px;
+    z-index: 999;
+}
+.table_more{
+    margin-top: 10px;
+}
+.more_info{
+    width: 100%;
+    border-collapse: inherit;
+    border-spacing: 3px;
+    font-size: inherit;
+}
+.more_info td{
+    width: 33%;
+}
+.goods_input{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.goods_input i{
+    position: absolute;
+    top: 1px;
+    right: 0;
+    padding: 4px;
+    background: #fff;
+}
+.sm_false{
+    padding: 1px 10px;
+    margin: 0 4px;
+    color: #fff;
+    background: #159B8F;
+    font-size: 14px;
+    border-radius: 2px;
+}
+.sm_true{
+    padding: 1px 10px;
+    margin: 0 4px;
+    color: #fff;
+    background: #2FA3FA;
+    font-size: 14px;
+    border-radius: 2px;
+}
+#jqgh_table_rn i{
+    vertical-align: sub;
+}
+.table_info{
+    overflow: hidden;
+}
+.re_up {
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+.layui-table-view{
+    margin: 0;
+}
+.more_info #file{
+    line-height: 38px;
+}

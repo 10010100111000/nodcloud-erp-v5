@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>{$sys.0.info.sys_name}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+        <link rel="stylesheet" href="/skin/css/layui.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="/skin/css/main/index.css" type="text/css" media="all" />
+        <script src="/skin/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/skin/js/layui.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/skin/js/public/other_public.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/skin/js/main/index.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body>
+        <div class="top">
+            <div class="left">
+                 <h1>{$sys.0.info.sys_name}</h1>
+            </div>
+            <div class="right">
+                <ul>
+                    <li onclick="out_sys();"><i class="layui-icon">&#xe904;</i>
+                    </li>
+                    <li onclick="help();"><i class="layui-icon">&#xe903;</i>帮助</li>
+                    <li onclick="kefu();"><i class="layui-icon">&#xe902;</i>客服</li>
+                    <li>
+                        <i class="layui-icon">&#xe901;</i>{$user.name}
+                        <div class="top_more">
+                            <p onclick="top_user_info('{$user.id}');">个人设置</p>
+                        </div>
+                    </li>
+                    <li onclick="location.reload();"><i class="layui-icon">&#x1002;</i>刷新</li>
+                    <div style="clear: both;"></div>
+                </ul>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="main">
+            <div class="left">
+                <div class="tab">
+                    <p class="set_tab_show">系统</p>
+                    <p>常用</p>
+                </div>
+                <div class="sys">
+                    <ul>
+                        {if condition="(check_roots(['purchase_add','purchase_form','opurchase_add','opurchase_form','rpurchase_add','rpurchase_form','repurchase_add','repurchase_form']))"}
+                            <li> <i class="layui-icon">&#xe905;</i><span>购货</span>
+                                <div class="more">
+                                    {if condition="(check_roots(['purchase_add','purchase_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['purchase_add']))"}onclick="set_tab('purchase','购货单','/index/main/purchase');"{/if}>购货单</p>
+                                            {if condition="(check_roots(['purchase_form']))"}
+                                                <tip onclick="set_tab('purchase_form','购货单报表','/index/main/purchase_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['opurchase_add','opurchase_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['opurchase_add']))"}onclick="set_tab('opurchase','采购订单','/index/main/opurchase');"{/if}>采购订单</p>
+                                            {if condition="(check_roots(['opurchase_form']))"}
+                                                <tip onclick="set_tab('opurchase_form','采购订单报表','/index/main/opurchase_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['rpurchase_add','rpurchase_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['rpurchase_add']))"}onclick="set_tab('orpurchase','采购入库单','/index/main/orpurchase');"{/if}>采购入库单</p>
+                                            {if condition="(check_roots(['rpurchase_form']))"}
+                                                <tip onclick="set_tab('rpurchase_form','采购入库单报表','/index/main/rpurchase_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['repurchase_add','repurchase_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['repurchase_add']))"}onclick="set_tab('repurchase','购货退货单','/index/main/repurchase');"{/if}>购货退货单</p>
+                                            {if condition="(check_roots(['repurchase_form']))"}
+                                                <tip onclick="set_tab('repurchase_form','购货退货单报表','/index/main/repurchase_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                </div>
+                            </li>
+                        {/if}
+                        {if condition="(check_roots(['sale_add','sale_form','resale_add','resale_form']))"}
+                            <li> <i class="layui-icon">&#xe906;</i><span>销货</span>
+                                <div class="more">
+                                    {if condition="(check_roots(['sale_add','sale_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['sale_add']))"}onclick="set_tab('sale','销货单','/index/main/sale');"{/if}>销货单</p>
+                                            {if condition="(check_roots(['sale_form']))"}
+                                                <tip onclick="set_tab('sale_form','销货单报表','/index/main/sale_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['resale_add','resale_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['resale_add']))"}onclick="set_tab('resale','销货退货单','/index/main/resale');"{/if}>销货退货单</p>
+                                            {if condition="(check_roots(['resale_form']))"}
+                                                <tip onclick="set_tab('resale_form','销货退货单报表','/index/main/resale_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                </div>
+                            </li>
+                        {/if}
+                        {if condition="(check_roots(['cashier_add','cashier_form','recashier_add','recashier_form','itemorder_add','itemorder_form','exchange_add','exchange_form']))"}
+                            <li><i class="layui-icon">&#xe907;</i><span>零售</span>
+                                <div class="more">
+                                    {notempty name="sys.3.info.cashier"}
+                                        {if condition="(check_roots(['cashier_add','cashier_form']))"}
+                                            <div>
+                                                <p {if condition="(check_roots(['cashier_add']))"}onclick="window.open('/index/main/cashier');"{/if}>收银台</p>
+                                                {if condition="(check_roots(['cashier_form']))"}
+                                                    <tip onclick="set_tab('cashier_form','零售单报表','/index/main/cashier_form');">报表</tip>
+                                                {/if}
+                                            </div>
+                                        {/if}
+                                        {if condition="(check_roots(['recashier_add','recashier_form']))"}
+                                            <div>
+                                                <p {if condition="(check_roots(['recashier_add']))"}onclick="set_tab('recashier','零售退货单','/index/main/recashier');"{/if}>零售退货单</p>
+                                                {if condition="(check_roots(['recashier_form']))"}
+                                                    <tip onclick="set_tab('recashier_form','零售退货单报表','/index/main/recashier_form');">报表</tip>
+                                                {/if}
+                                            </div>
+                                        {/if}
+                                    {/notempty}
+                                    {if condition="(check_roots(['itemorder_add','itemorder_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['itemorder_add']))"}onclick="set_tab('itemorder','服务订单','/index/main/itemorder');"{/if}>服务订单</p>
+                                            {if condition="(check_roots(['itemorder_form']))"}
+                                                <tip onclick="set_tab('itemorder_form','服务订单报表','/index/main/itemorder_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['exchange_add','exchange_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['exchange_add']))"}onclick="set_tab('exchange','积分兑换','/index/main/exchange');"{/if}>积分兑换</p>
+                                            {if condition="(check_roots(['exchange_form']))"}
+                                                <tip onclick="set_tab('exchange_form','积分兑换单报表','/index/main/exchange_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                </div>
+                            </li>
+                        {/if}
+                        {if condition="(check_roots(['allocation_add','allocation_form','room_add','otpurchase_add','otpurchase_form','otsale_add','otsale_form']))"}
+                            <li> <i class="layui-icon">&#xe908;</i><span>仓库</span>
+                                <div class="more">
+                                    {if condition="(check_roots(['allocation_add','allocation_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['allocation_add']))"}onclick="set_tab('allocation','调拨单','/index/main/allocation');"{/if}>调拨单</p>
+                                            {if condition="(check_roots(['allocation_form']))"}
+                                                <tip onclick="set_tab('allocation_form','调拨单报表','/index/main/allocation_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['room_add']))"}
+                                        <p onclick="set_tab('room','库存查询','/index/main/room');">库存查询</p>
+                                        <p onclick="set_tab('room_check','库存盘点','/index/main/room_check');">库存盘点</p>
+                                        <p onclick="set_tab('room_warning','库存预警','/index/main/room_warning');">库存预警</p>
+                                    {/if}
+                                    {if condition="(check_roots(['otpurchase_add','otpurchase_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['otpurchase_add']))"}onclick="set_tab('otpurchase','其他入库单','/index/main/otpurchase');"{/if}>其他入库单</p>
+                                            {if condition="(check_roots(['otpurchase_form']))"}
+                                                <tip onclick="set_tab('otpurchase_form','其他入库单报表','/index/main/otpurchase_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['otsale_add','otsale_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['otsale_add']))"}onclick="set_tab('otsale','其他出库单','/index/main/otsale');"{/if}>其他出库单</p>
+                                            {if condition="(check_roots(['otsale_form']))"}
+                                                <tip onclick="set_tab('otsale_form','其他出库单报表','/index/main/otsale_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                </div>
+                            </li>
+                        {/if}
+                        {if condition="(check_roots(['gather_add','gather_form','payment_add','payment_form','otgather_add','otgather_form','otpayment_add','otpayment_form','eft_add','eft_form']))"}
+                            <li> <i class="layui-icon">&#xe909;</i><span>资金</span>
+                                <div class="more">
+                                    {if condition="(check_roots(['gather_add','gather_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['gather_add']))"}onclick="set_tab('gather','收款单','/index/main/gather');"{/if}>收款单</p>
+                                            {if condition="(check_roots(['gather_form']))"}
+                                                <tip onclick="set_tab('gather_form','收款单报表','/index/main/gather_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['payment_add','payment_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['payment_add']))"}onclick="set_tab('payment','付款单','/index/main/payment');"{/if}>付款单</p>
+                                            {if condition="(check_roots(['payment_form']))"}
+                                                <tip onclick="set_tab('payment_form','付款单报表','/index/main/payment_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['otgather_add','otgather_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['otgather_add']))"}onclick="set_tab('otgather','其他收入单','/index/main/otgather');"{/if}>其他收入单</p>
+                                            {if condition="(check_roots(['otgather_form']))"}
+                                                <tip onclick="set_tab('otgather_form','其他收入单报表','/index/main/otgather_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['otpayment_add','otpayment_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['otpayment_add']))"}onclick="set_tab('otpayment','其他支出单','/index/main/otpayment');"{/if}>其他支出单</p>
+                                            {if condition="(check_roots(['otpayment_form']))"}
+                                                <tip onclick="set_tab('otpayment_form','其他支出单报表','/index/main/otpayment_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['eft_add','eft_form']))"}
+                                        <div>
+                                            <p {if condition="(check_roots(['eft_add']))"}onclick="set_tab('eft','资金调拨单','/index/main/eft');"{/if}>资金调拨单</p>
+                                            {if condition="(check_roots(['eft_form']))"}
+                                                <tip onclick="set_tab('eft_form','资金调拨单报表','/index/main/eft_form');">报表</tip>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                </div>
+                            </li>
+                        {/if}
+                        {if condition="(check_roots(['purchase_form','rpurchase_form','repurchase_form','sale_form','resale_form','itemorder_form','data_form']))"}
+                            <li> <i class="layui-icon">&#xe63C;</i><span>报表</span>
+                                <div class="more">
+                                    {if condition="(check_roots(['purchase_form','rpurchase_form','repurchase_form','sale_form','resale_form','itemorder_form']))"}
+                                        <div class="nav">
+                                            <h2>单据对账单</h2>
+                                            <hr />
+                                            {if condition="(check_roots(['purchase_form']))"}
+                                                <p onclick="set_tab('purchase_bill','购货对账单','/index/main/purchase_bill');">购货对账单</p>
+                                            {/if}
+                                            {if condition="(check_roots(['rpurchase_form']))"}
+                                                <p onclick="set_tab('rpurchase_bill','采购入库对账单','/index/main/rpurchase_bill');">采购入库对账单</p>
+                                            {/if}
+                                            {if condition="(check_roots(['repurchase_form']))"}
+                                                <p onclick="set_tab('repurchase_bill','购货退货对账单','/index/main/repurchase_bill');">购货退货对账单</p>
+                                            {/if}
+                                            {if condition="(check_roots(['sale_form']))"}
+                                                <p onclick="set_tab('sale_bill','销货对账单','/index/main/sale_bill');">销货对账单</p>
+                                            {/if}
+                                            {if condition="(check_roots(['resale_form']))"}
+                                                <p onclick="set_tab('resale_bill','销货退货对账单','/index/main/resale_bill');">销货退货对账单</p>
+                                            {/if}
+                                            {if condition="(check_roots(['itemorder_form']))"}
+                                                <p onclick="set_tab('itemorder_bill','服务对账单','/index/main/itemorder_bill');">服务对账单</p>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['data_form']))"}
+                                        <div class="nav" style="border-right:none;">
+                                            <h2>数据报表</h2>
+                                            <hr />
+                                            <p onclick="set_tab('summary','数据初始化','/index/main/summary');">数据初始化</p>
+                                            <p onclick="set_tab('ape_goods_form','商品利润表','/index/main/ape_goods_form');">商品利润表</p>
+                                            <p onclick="set_tab('profit_form','销售利润表','/index/main/profit_form');">销售利润表</p>
+                                            <p onclick="set_tab('serial_form','串码跟踪表','/index/main/serial_form');">串码跟踪表</p>
+                                            <p onclick="set_tab('arrears_form','往来单位欠款表','/index/main/arrears_form');">往来单位欠款表</p>
+                                        </div>
+                                    {/if}
+                                </div>
+                            </li>
+                        {/if}
+                        {if condition="(check_roots(['basics_form','auxiliary_form','senior_form']))"}
+                            <li> <i class="layui-icon">&#xe910;</i><span>设置</span>
+                                <div class="more">
+                                    {if condition="(check_roots(['basics_form']))"}
+                                        <div class="nav">
+                                            <h2>基础资料</h2>
+                                            <hr />
+                                            <p onclick="set_tab('customer','客户管理','/index/main/customer');">客户管理</p>
+                                            <p onclick="set_tab('supplier','供应商管理','/index/main/supplier');">供应商管理</p>
+                                            <p onclick="set_tab('goods','商品管理','/index/main/goods');">商品管理</p>
+                                            <p onclick="set_tab('warehouse','仓库管理','/index/main/warehouse');">仓库管理</p>
+                                            <p onclick="set_tab('account','资金账户','/index/main/account');">资金账户</p>
+                                            <p onclick="set_tab('item','服务管理','/index/main/item');">服务管理</p>
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['auxiliary_form']))"}
+                                        <div class="nav">
+                                             <h2>辅助资料</h2>
+                                            <hr /> 
+                                            <p onclick="set_tab('goodsclass','商品类别','/index/main/goodsclass');">商品类别</p>
+                                            <p onclick="set_tab('unit','计量单位','/index/main/unit');">计量单位</p>
+                                            <p onclick="set_tab('brand','品牌管理','/index/main/brand');">品牌管理</p>
+                                            <p onclick="set_tab('code','条码管理','/index/main/code');">条码管理</p>
+                                            <p onclick="set_tab('attribute','辅助属性','/index/main/attribute');">辅助属性</p>
+                                            <p onclick="set_tab('often','常用功能','/index/main/often');">常用功能</p> 
+                                        </div>
+                                    {/if}
+                                    {if condition="(check_roots(['senior_form']))"}
+                                        <div class="nav" style="border-right:none;">
+                                            <h2>高级设置</h2>
+                                            <hr />
+                                            <p onclick="set_tab('sys','系统参数','/index/main/sys');">系统参数</p>
+                                            <p onclick="set_tab('user','职员管理','/index/main/user');">职员管理</p>
+                                            <p onclick="set_tab('db_backup','数据备份','/index/main/db_backup');">数据备份</p>
+                                            <p onclick="set_tab('root','权限设置','/index/main/root');">权限设置</p>
+                                            <p onclick="set_tab('auth','数据授权','/index/main/auth');">数据授权</p>
+                                            <p onclick="set_tab('log','操作日志','/index/main/log');">操作日志</p>
+                                        </div>
+                                    {/if}
+                                </div>
+                            </li>
+                        {/if}
+                    </ul>
+                </div>
+                <div class="often">
+                    <ul>
+                        {volist name="often" id="often_vo"}
+                            <li onclick='{$often_vo.set}'>{$often_vo.name}</li>
+                        {/volist}
+                         <li onclick="set_tab('up_sys','系统升级','/index/main/up_sys');">系统升级</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right">
+                <div class="layui-tab layui-tab-card" lay-filter="tabs" lay-allowclose="true">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">首页</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show" >
+                            <iframe class="iframe_box" src="/index/main/home" frameborder="0"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </body>
+</html>

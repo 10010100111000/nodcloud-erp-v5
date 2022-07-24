@@ -1,0 +1,73 @@
+.operation{
+    padding: 2px 0px;
+}
+.so{
+    float: left;
+    width: 65%;
+}
+
+.so table{
+    border-collapse: inherit;
+    border-spacing: 2px;
+    font-size: inherit;
+}
+.so td{
+    width: 200px;
+}
+.set{
+    float: right;
+    width: 35%;
+}
+.set button{
+    float: right;
+    margin-right: 6px;
+    margin-left: 0 !important;
+}
+th,td{
+    text-align:center !important;
+}
+.so button{
+    margin-left: 4px !important;
+}
+.so .re_left{
+    text-align: left !important;
+}
+.re_padding{
+    padding: 2%;
+}
+.xls li{
+    line-height: 32px;
+}
+.xls .btn{
+    text-align: center;
+}
+.xls button , .layui-upload-button{
+    margin: 0px 6px;
+}
+.bom{
+    margin: 24px 0 24px 0;
+}
+
+.re_table{
+    width: 100%;
+    border-collapse: inherit;
+    border-spacing: 3px;
+    font-size: inherit;
+}
+.re_up {
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+.layui-table-view .layui-table[lay-size=lg] .layui-table-cell {
+    height: 32px;
+    line-height: 32px;
+}
+.layui-table-view{
+    margin: 0;
+}
+.layui-table-view img{
+    
+    width: 56px;
+    height: 18px;
+}

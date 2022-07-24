@@ -1,0 +1,97 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--资金调拨单-->
+<link rel="stylesheet" href="/skin/css/public/ui.jqgrid.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/public/jquery-ui.min.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/main/public_form.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="form_info layui-form layui-form-pane">
+        <div class="layui-form-item" style="margin-left: 0;">
+            <label class="layui-form-label">单据日期</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" id="time" placeholder="单据日期" value="{php}echo date('Y-m-d',time());{/php}" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单据编号</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" id="number" placeholder="单据编号" value="{php}echo get_number('eft');{/php}">
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div class="set_btn">
+        {empty name="Think.get.id"}
+            <button class="layui-btn layui-btn-normal" onclick="save(this);">提交单据</button>
+        {else/}
+            {empty name="class.type.ape"}
+                {if condition="(check_root('eft_edit'))"}
+                    <button class="layui-btn layui-btn-normal" onclick="save(this,'{$Think.get.id}');">保存单据</button>
+                {/if}
+                {if condition="(check_root('eft_auditing'))"}  
+                <button class="layui-btn layui-btn-primary" onclick="auditing('{$Think.get.id}',true);">审核单据</button>
+                {/if}
+            {else/}
+                {if condition="(check_root('eft_auditing'))"}
+                    <button class="layui-btn layui-btn-primary" onclick="auditing('{$Think.get.id}',false);">反审核单据</button>
+                {/if}
+            {/empty}
+        {/empty}
+        <button class="layui-btn" onclick="ape_re();">重新载入</button>
+    </div>
+</div>
+<hr />
+<div class="table_info">
+    <table id="table"></table>
+</div>
+<div class="table_more layui-form layui-form-pane">
+    <table class="more_info">
+        <tr><td></td><td></td><td></td></tr>
+        <tr>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">制单人</label>
+                    <div class="layui-input-block">
+                        <select id="user" class="layui-input" lay-search>
+                		    {volist name="user" id="user_vo"}
+                                <option value="{$user_vo.id}">{$user_vo.name}</option>
+                            {/volist}
+                		</select>
+                    </div>
+                </div>
+            </td>
+            <td colspan="2">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注信息</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="data" placeholder="请输入备注信息" class="layui-input">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript" charset="utf-8">
+    var auditing_type='{$class.type.ape|default='0'}';
+    var account_arr={php}echo account_arr();{/php};
+    $('#user').val('{$Think.session.is_user_id}');
+    {empty name="sys.info.user_choose"}$('#user').attr('disabled',true);{/empty}
+</script>
+<script src="/skin/js/public/grid.locale-cn.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/public/jqGrid.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/public_tab.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/eft_tab.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/eft.js" type="text/javascript" charset="utf-8"></script>
+{notempty name="Think.get.id"}
+    <script type="text/javascript" charset="utf-8">
+        $('#time').val('{$class.time}');
+        $('#number').val('{$class.number}');
+        $('#user').val('{$class.user.ape}');
+        $('#data').val('{$class.data}');
+        add_infos({php}echo json_encode($info);{/php},false);
+        cal_default_rows();
+    </script>
+{/notempty}
+
+
+{/block}

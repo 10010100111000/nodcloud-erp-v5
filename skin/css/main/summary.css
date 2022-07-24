@@ -1,0 +1,24 @@
+.info{
+    
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 3%;
+}
+.info li{
+    line-height: 32px;
+}
+.info button{
+    margin-top: 12px;
+}
+.box{
+    display: none;
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 3%;
+}
+.layui-form-text{
+    margin-top: 1%;
+}
+.box textarea{
+    height: 180px;
+}

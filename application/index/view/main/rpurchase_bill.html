@@ -1,0 +1,69 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--账户-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+		<table>
+    			<tr>
+    			    <td>
+    					<input type="text" class="layui-input" id="so|number" placeholder="单据编号">
+    				</td>
+    			    <td>
+    					<input type="text" class="layui-input" id="so|start_time" placeholder="开始日期" >
+    				</td>
+    				<td>
+    					<input type="text" class="layui-input" id="so|end_time" placeholder="结束日期" >
+    				</td>
+    				<td>
+    				    <input type="text" class="layui-input" id="so|supplier" placeholder="全部供应商" readonly="true" onclick="set_supplier(this)" ape='0'>
+    				</td>
+    				<td class="re_left">
+    				    <button class="layui-btn layui-btn-primary" onclick="more(this)" ape="hide"><i class="layui-icon">&#xe61a;</i></button>
+    				    <button class="layui-btn layui-btn-primary" onclick="so()" style="margin:0"><i class="layui-icon">&#xe615;</i></button>
+    		        </td>
+    			</tr>
+    			<tr style="display:none">
+    				<td>
+    					<select id="so|billtype" class="layui-input">
+                            <option value="0">付款状态</option>
+            				<option value="1">未结算</option>
+            				<option value="2">部分结算</option>
+            				<option value="3">已结算</option>
+            			</select>
+    				</td>
+    				<td>
+    					<select id="so|account" class="layui-input" lay-search>
+                            <option value="0">结算账户</option>
+                		    {volist name="account" id="account_vo"}
+                		        <option value="{$account_vo.id}">{$account_vo.name}</option>
+                		    {/volist}
+                		</select>
+    				</td>
+    				<td>
+    					<select id="so|user" class="layui-input" lay-search>
+                            <option value="0">操作用户</option>
+                		    {volist name="user" id="user_vo"}
+                		        <option value="{$user_vo.id}">{$user_vo.name}</option>
+                		    {/volist}
+                		</select>
+    				</td>
+    			</tr>
+    		</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        <button class="layui-btn layui-btn-danger" onclick="export_data();">导出</button>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script type="text/javascript" charset="utf-8">
+//默认账户
+var default_account=false;
+{notempty name="sys.info.default_account"}default_account = {$sys.info.default_account};{/notempty}
+</script>
+<script src="/skin/js/main/public_report.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/rpurchase_bill.js" type="text/javascript" charset="utf-8"></script>
+{/block}

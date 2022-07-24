@@ -1,0 +1,103 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--商品-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/public/zTreeStyle.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/plug/baidu_edit/themes/default/css/umeditor.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/main/goods.css" type="text/css" media="all" />
+<div class="operation">
+        <div class="so layui-form layui-form-pane">
+    		<table>
+    			<tr>
+    				<td>
+    					<input type="text" id="so|name" placeholder="商品名称/首字母" class="layui-input" >
+    				</td>
+    				<td>
+    					<input type="text" id="so|code" placeholder="条形码" class="layui-input" >
+    				</td>
+    				<td>
+    					<input type="text" id="so|spec" placeholder="规格型号" class="layui-input" >
+    				</td>
+    				<td>
+    				    <div style="position: relative;">
+    				        <input type="text" id="so|class" placeholder="请选择商品分类" value="全部分类" class="layui-input " onClick="$(this).next().show();" ape="">
+    						<div class="ape_select">
+    							<ul id="so_class_info" class="ztree"></ul>
+    						</div>
+    				    </div>
+    				</td>
+    				<td style="text-align: left !important;">
+    				    <button class="layui-btn layui-btn-primary" onclick="more(this)" ape="hide"><i class="layui-icon">&#xe61a;</i></button> 
+    				    <button class="layui-btn layui-btn-primary" onclick="so()" style="margin:0"><i class="layui-icon">&#xe615;</i></button>
+    		        </td>
+    			</tr>
+    			<tr style="display:none">
+    				<td>
+    					<select id="so|warehouse" class="layui-input" lay-search>
+							<option value="0">全部仓库</option>
+							{volist name="warehouse" id="warehouse_vo"}
+								<option value="{$warehouse_vo.id}">{$warehouse_vo.name}</option>
+                            {/volist}
+						</select>
+    				</td>
+    				<td>
+    					<select id="so|brand" class="layui-input" lay-search>
+							<option value="0">全部品牌</option>
+							{volist name="brand" id="brand_vo"}
+								<option value="{$brand_vo.id}">{$brand_vo.name}</option>
+                            {/volist}
+						</select>
+    				</td>
+    				<td>
+    					<select id="so|unit" class="layui-input" lay-search>
+							<option value="0">全部单位</option>
+							{volist name="unit" id="unit_vo"}
+								<option value="{$unit_vo.id}">{$unit_vo.name}</option>
+                            {/volist}
+						</select>
+    				</td>
+    				<td>
+    					<input type="text" id="so|number" placeholder="商品编号" class="layui-input" />
+    				</td>
+    			</tr>
+    	        <tr style="display:none">
+            	    <td>
+    					<input type="text" id="so|location" placeholder="商品货位" class="layui-input" />
+    				</td>
+    			    <td>
+    					<input type="text" id="so|retail_name" placeholder="零售名称" class="layui-input" />
+    				</td>
+    				<td>
+    					<input type="text" id="so|integral" placeholder="商品积分" class="layui-input" />
+    				</td>
+    			    <td>
+    					<input type="text" id="so|data" placeholder="备注信息" class="layui-input" />
+    				</td>
+    			</tr>
+    		</table>
+    	</div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        <button class="layui-btn layui-btn-danger" onclick="export_data();">导出</button>
+        <button class="layui-btn" onclick="import_data();">导入</button>
+        {if condition="(check_root('basics_add'))"}
+            <button class="layui-btn layui-btn-normal"  onclick="goods_info();">新增</button>
+        {/if}
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script type="text/javascript" charset="utf-8">
+    var root_del={if condition="(check_root('basics_del'))"}true{else /}false{/if};
+    var root_edit={if condition="(check_root('basics_edit'))"}true{else /}false{/if};
+    var sys_threshold='{$sys.info.threshold}';
+    var serial_type={empty name="sys.info.serial"}false{else/}true{/empty};
+</script>
+<script src="/skin/js/public/ztree.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/plug/baidu_edit/third-party/template.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/plug/baidu_edit/umeditor.config.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/plug/baidu_edit/umeditor.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/plug/baidu_edit/lang/zh-cn/zh-cn.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/goods.js" type="text/javascript" charset="utf-8"></script>
+{/block}/    

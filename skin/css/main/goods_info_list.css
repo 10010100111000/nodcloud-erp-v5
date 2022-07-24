@@ -1,0 +1,39 @@
+.goods_info_list{
+    padding: 8px 6px;
+}
+.so_info{
+    border-collapse: inherit;
+    border-spacing: 2px;
+    font-size: inherit;
+}
+.so_info td{
+    width: 28%;
+}
+.so_info .layui-form-item{
+    margin: 0;
+}
+.ape_goods{
+    overflow: auto;
+    min-height: 320px;
+}
+/*设置溢出隐藏*/
+#goods_lists th,#goods_lists td{
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 7px 16px;
+}
+#tab_page{
+    text-align: center;
+}
+.layui-table-cell img{
+    width: 100%;
+    height: 100%;
+}
+.layui-table-view div[class*="img"]{
+    padding: 0;
+}
+.layui-table-view{
+    margin:0;
+}

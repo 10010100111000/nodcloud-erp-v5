@@ -1,0 +1,48 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--备份-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        <button class="layui-btn" onclick="info();">说明</button>
+        {if condition="(check_root('senior_add'))"}
+            <button class="layui-btn layui-btn-normal"  onclick="back_info();" id="back_btn">数据备份</button>
+        {/if}
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<div class="tab layui-form">
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th style="width: 27%">备份时间</th>
+                <th style="width: 27%">文件名称</th>
+                <th style="width: 27%">文件大小</th>
+                <th style="width: 19%">相关操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {volist name="list" id="back"}
+            <tr>
+                <td>{$back.time_one}</td>
+                <td>{$back.name}</td>
+                <td>{$back.size}</td>
+                <td>
+                    <div class="layui-btn-group">
+                        <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="back_info('{$back.name}',this)"><i class="layui-icon">&#xe621;</i>
+                        </button>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="del_sn_db('{$back.name}',this)"><i class="layui-icon">&#xe640;</i>
+                        </button>
+                    </div>
+                </td>
+            </tr>{/volist}</tbody>
+    </table>
+</div>
+<script type="text/javascript" charset="utf-8">
+    var root_del={if condition="(check_root('senior_del'))"}true{else /}false{/if};
+    var root_edit={if condition="(check_root('senior_edit'))"}true{else /}false{/if};
+</script>
+<script src="/skin/js/main/back.js" type="text/javascript" charset="utf-8"></script>
+{/block}

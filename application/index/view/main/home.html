@@ -1,0 +1,192 @@
+{extend name="main/main" /} {block name="main"}
+<link rel="stylesheet" href="/skin/css/main/home.css" type="text/css" media="all" />
+<div class="box">
+    <div class="sys_info">
+        <table width="100%" border="0" cellspacing="0" cellpadding="20">
+            <tbody>
+                <tr>
+                	<td>
+                	    {php}$cal_purchase = cal_purchase_info();{/php}
+                        <a class="t1" {if condition="(check_roots(['purchase_form']))"}onclick="parent.set_tab('purchase_form','购货单报表','/index/main/purchase_form');"{/if}>
+                            <span>购货总量(本月):<b>{$cal_purchase.nums}</b></span>
+    	                    <span>购货金额(本月):<b>{$cal_purchase.money}</b></span>
+                        </a>
+                    </td>
+                    <td>
+                        {php}$cal_sale_cashier = cal_sale_cashier_info();{/php}
+                        <a class="t2">
+                            <span>销售总量(本月):<b>{$cal_sale_cashier.nums}</b></span>
+    	                    <span>销售金额(本月):<b>{$cal_sale_cashier.money}</b></span>
+                        </a>
+                    </td>
+                    {php}$cal_room = cal_room_info();{/php}
+                    <td>
+                        <a class="t3" {if condition="(check_roots(['room_add']))"}onclick="parent.set_tab('room','库存查询','/index/main/room');"{/if}>
+                            <span>库存总量:<b>{$cal_room.nums}</b></span>
+    	                    <span>库存成本:<b>{$cal_room.money}</b></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="t4" {if condition="(check_roots(['room_add']))"}onclick="parent.set_tab('room_warning','库存预警','/index/main/room_warning');"{/if}>
+                            <span>库存预警:<b>{$cal_room.tip_nums}</b></span>
+    	                    <span>默认阈值:<b>{$sys.1.info.threshold}</b></span>
+                        </a>
+                    </td>
+                    <td>
+                        {php}$cal_arrears = cal_arrears_info();{/php}
+                        <a class="t5" {if condition="(check_roots(['data_form']))"}onclick="parent.set_tab('arrears_form','往来单位欠款表','/index/main/arrears_form');"{/if}>
+                            <span>客户欠款:<b>{$cal_arrears.customer}</b></span>
+    	                    <span>供应商欠款:<b>{$cal_arrears.supplier}</b></span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="sys_form">
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+          <ul class="layui-tab-title">
+            <li ape_name="purchase" class="layui-this">购货</li>
+            <li ape_name="rpurchase">采购</li>
+            <li ape_name="sale">销货</li>
+            <li ape_name="cashier" class="ape_cashier">零售</li>
+            <li ape_name="itemorder">服务</li>
+            <li ape_name="room">仓库</li>
+            <li ape_name="account">资金</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div id="purchase_form"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div id="rpurchase_form"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div id="sale_form"></div>
+            </div>
+            <div class="layui-tab-item ape_cashier">
+                <div id="cashier_form"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div id="itemorder_form"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div id="room_form"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div id="account_form"></div>
+            </div>
+          </div>
+        </div> 
+    </div>
+</div>
+{php}$day_arr=sum_old_day($sys[1]['info']['homeday']);$room_info=home_room_form();$account_info=home_account_form();{/php}
+<script type="text/javascript" charset="utf-8">
+    //零售模块
+    var cashier_type={empty name="sys.3.info.cashier"}false{else/}true{/empty};
+    if(!cashier_type){
+        $('.ape_cashier').remove();
+    }
+    //时间范围
+    var day_json={php}echo json_encode($day_arr);{/php};
+    //购货
+    purchase_option = {
+        color: ['#3398DB'],
+        tooltip : {trigger: 'axis',axisPointer : {type : 'shadow'}},
+        grid: {left: '1%',right: '1%',top: '6%',bottom: '0%',containLabel: true},
+        xAxis : [{
+            type : 'category',
+            data : day_json,
+            axisTick: {alignWithLabel: true}}],
+        yAxis : [{type : 'value'}],
+        series : [{
+            name:'购货金额',
+            type:'bar',
+            barWidth: '60%',
+            data:{php}echo home_form_option('purchaseclass','money',$day_arr);{/php}
+        }]
+    };
+    //采购
+    rpurchase_option = {
+        color: ['#3398DB'],
+        tooltip : {trigger: 'axis',axisPointer : {type : 'shadow'}},
+        grid: {left: '1%',right: '1%',top: '6%',bottom: '0%',containLabel: true},
+        xAxis : [{
+            type : 'category',
+            data : day_json,
+            axisTick: {alignWithLabel: true}}],
+        yAxis : [{type : 'value'}],
+        series : [{
+            name:'采购金额',
+            type:'bar',
+            barWidth: '60%',
+            data:{php}echo home_form_option('rpurchaseclass','money',$day_arr);{/php}
+        }]
+    };
+    //销货
+    sale_option = {
+        color: ['#3398DB'],
+        tooltip : {trigger: 'axis',axisPointer : {type : 'shadow'}},
+        grid: {left: '1%',right: '1%',top: '6%',bottom: '0%',containLabel: true},
+        xAxis : [{
+            type : 'category',
+            data : day_json,
+            axisTick: {alignWithLabel: true}}],
+        yAxis : [{type : 'value'}],
+        series : [{
+            name:'销货金额',
+            type:'bar',
+            barWidth: '60%',
+            data:{php}echo home_form_option('saleclass','money',$day_arr);{/php}
+        }]
+    };
+    //零售
+    cashier_option = {
+        color: ['#3398DB'],
+        tooltip : {trigger: 'axis',axisPointer : {type : 'shadow'}},
+        grid: {left: '1%',right: '1%',top: '6%',bottom: '0%',containLabel: true},
+        xAxis : [{
+            type : 'category',
+            data : day_json,
+            axisTick: {alignWithLabel: true}}],
+        yAxis : [{type : 'value'}],
+        series : [{
+            name:'零售金额',
+            type:'bar',
+            barWidth: '60%',
+            data:{php}echo home_form_option('cashierclass','money',$day_arr);{/php}
+        }]
+    };
+    //服务
+    itemorder_option = {
+        color: ['#3398DB'],
+        tooltip : {trigger: 'axis',axisPointer : {type : 'shadow'}},
+        grid: {left: '1%',right: '1%',top: '6%',bottom: '0%',containLabel: true},
+        xAxis : [{
+            type : 'category',
+            data : day_json,
+            axisTick: {alignWithLabel: true}}],
+        yAxis : [{type : 'value'}],
+        series : [{
+            name:'服务金额',
+            type:'bar',
+            barWidth: '60%',
+            data:{php}echo home_form_option('itemorderclass','money',$day_arr);{/php}
+        }]
+    };
+    //仓库
+    room_option = {
+        tooltip : {trigger: 'item',formatter: "{b} <br/>库存数 : {c} ({d}%)"},
+        legend: {orient: 'vertical',left: 'left',data: {$room_info.title}},
+        series : [{type: 'pie',radius : '55%',center: ['50%', '60%'],data:{$room_info.main},itemStyle: {emphasis: {shadowBlur: 10,shadowOffsetX: 0,shadowColor: 'rgba(0, 0, 0, 0.5)'}}}]
+    };
+    //资金账户
+    account_option = {
+        tooltip : {trigger: 'item',formatter: "{b} <br/>资金数 : {c} ({d}%)"},
+        legend: {orient: 'vertical',left: 'left',data: {$account_info.title}},
+        series : [{type: 'pie',radius : '55%',center: ['50%', '60%'],data:{$account_info.main},itemStyle: {emphasis: {shadowBlur: 10,shadowOffsetX: 0,shadowColor: 'rgba(0, 0, 0, 0.5)'}}}]
+    };
+</script>
+<script src="/skin/js/public/echarts.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/home.js" type="text/javascript" charset="utf-8"></script>
+{/block}

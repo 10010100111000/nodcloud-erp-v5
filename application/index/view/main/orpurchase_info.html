@@ -1,0 +1,134 @@
+{extend name="main/main" /}
+{block name="main"}
+<!-- 采购入库单_采购转入库 -->
+<link rel="stylesheet" href="/skin/css/public/ui.jqgrid.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/public/jquery-ui.min.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/main/public_form.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="form_info layui-form layui-form-pane">
+        <div class="layui-form-item" style="margin-left: 0;">
+            <label class="layui-form-label">供应商</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" id="supplier" placeholder="请点击选择" readonly="true" onclick="set_supplier(this)" ape=''>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单据日期</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" id="time" placeholder="单据日期" value="{php}echo date('Y-m-d',time());{/php}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单据编号</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" id="number" placeholder="单据编号" value="{php}echo get_number('rpurchase');{/php}">
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div class="set_btn">
+        <button class="layui-btn layui-btn-normal" onclick="save(this);">提交单据</button>
+        <button class="layui-btn" onclick="ape_re();">重新载入</button>
+    </div>
+</div>
+<hr />
+<div class="table_info">
+    <table id="table"></table>
+</div>
+<div class="table_more layui-form layui-form-pane">
+    <table class="more_info">
+        <tr>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单据金额</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="total" placeholder="单据金额" class="layui-input" disabled="disabled">
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">实际金额</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="actual" placeholder="请输入实际金额" class="layui-input" value="0" onBlur="cal_actual();" cal='true'>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">实付金额</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="money" placeholder="请输入实付金额" class="layui-input">
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">制单人</label>
+                    <div class="layui-input-block">
+                        <select id="user" class="layui-input" lay-search>
+                            <option value="">请选择制单人</option>
+                		    {volist name="user" id="user_vo"}
+                                <option value="{$user_vo.id}">{$user_vo.name}</option>
+                            {/volist}
+                		</select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">结算账户</label>
+                    <div class="layui-input-block">
+                        <select id="account" class="layui-input" lay-search>
+                            <option value="">请选择结算账户</option>
+                		    {volist name="account" id="account_vo"}
+                                <option value="{$account_vo.id}">{$account_vo.name}</option>
+                            {/volist}
+                		</select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" id="up_btn">上传附件</label>
+                    <div class="layui-input-block">
+                        <span class="layui-input" id="file" ape="0">未上传</span>
+                    </div>
+                    
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注信息</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="data" placeholder="请输入备注信息" class="layui-input">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript" charset="utf-8">
+    var oid='{$Think.get.id}';
+    var warehouse_arr={php}echo warehouse_arr();{/php};
+    var tabinfo={php}echo tabinfo('orpurchase');{/php};
+    var batch_type={empty name="sys.info.batch"}false{else/}true{/empty};
+    var serial_type={empty name="sys.info.serial"}false{else/}true{/empty};
+    $('#user').val('{$Think.session.is_user_id}');
+    {empty name="sys.info.user_choose"}$('#user').attr('disabled',true);{/empty}
+    {notempty name="sys.info.default_account"}$('#account').val('{$sys.info.default_account}');{/notempty}
+</script>
+<script src="/skin/js/public/ztree.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/public/grid.locale-cn.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/public/jqGrid.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/public_tab.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/rpurchase_info_tab.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/rpurchase_info.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+    add_goods({php}echo json_encode($info);{/php},false);
+</script>
+{/block}

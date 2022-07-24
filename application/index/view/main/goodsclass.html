@@ -1,0 +1,63 @@
+{extend name="main/main" /} {block name="main"}
+<!--商品分类-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/public/zTreeStyle.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+		<table>
+			<tr>
+				<td>
+					<input type="text" class="layui-input" id="so|name" placeholder="分类名称">
+				</td>
+				<td class="re_left">
+				    <button class="layui-btn layui-btn-primary" onclick="so()" style="margin:0"><i class="layui-icon">&#xe615;</i></button>
+		        </td>
+			</tr>
+		</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        {if condition="(check_root('auxiliary_add'))"}
+            <button class="layui-btn layui-btn-normal" onclick="goodsclass_info();">新增</button>
+        {/if}
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<div class="tab layui-form">
+    <table class="layui-table" id="tab">
+        <thead>
+            <tr>
+                <th style="width: 27%">分类名称</th>
+                <th style="width: 27%">所属分类</th>
+                <th style="width: 27%">备注信息</th>
+                <th style="width: 19%">相关操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {volist name="list" id="goodsclass"}
+            <tr id="{$goodsclass.id}" pid="{$goodsclass.pid.ape}">
+                <td>{$goodsclass.name}</td>
+                <td>{$goodsclass.pid.name}</td>
+                <td>{$goodsclass.data}</td>
+                <td>
+                    <div class="layui-btn-group">
+                        <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="goodsclass_info({$goodsclass.id})"><i class="layui-icon">&#xe642;</i>
+                        </button>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="del_goodsclass({$goodsclass.id})"><i class="layui-icon">&#xe640;</i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {/volist}
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript" charset="utf-8">
+    var goodsclass_arr = {php}echo json_encode(goodsclass_arr(true,'顶级分类'),true); {/php};
+    var root_del={if condition="(check_root('auxiliary_del'))"}true{else /}false{/if};
+    var root_edit={if condition="(check_root('auxiliary_edit'))"}true{else /}false{/if};
+</script>
+<script src="/skin/js/public/treeTable.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/public/ztree.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/goodsclass.js" type="text/javascript" charset="utf-8"></script>{/block}

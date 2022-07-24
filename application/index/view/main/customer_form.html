@@ -1,0 +1,50 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--客户积分详情表-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+		<table>
+			<tr>
+			    <td style="display:none;">
+					<input type="text"  id="so|id" value="{$Think.get.id}" >
+				</td>
+				<td>
+					<input type="text" class="layui-input" id="so|start_time" placeholder="开始日期">
+				</td>
+				<td>
+				    <input type="text" class="layui-input" id="so|end_time" placeholder="结束日期">
+				</td>
+				<td>
+					<select id="so|type" class="layui-input">
+                        <option value="0">单据类型</option>
+            		    <option value="1">零售单</option>
+            		    <option value="2">零售退货单</option>
+            		    <option value="4">积分兑换单</option>
+            		    <option value="3">手动操作</option>
+            		</select>
+				</td>
+				<td>
+					<select id="so|set" class="layui-input">
+                        <option value="0">积分操作</option>
+            		    <option value="1">积分减少</option>
+            		    <option value="2">积分增加</option>
+            		</select>
+				</td>
+				<td class="re_left">
+				    <button class="layui-btn layui-btn-primary" onclick="so()" style="margin:0"><i class="layui-icon">&#xe615;</i></button>
+		        </td>
+			</tr>
+		</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="tmp_re();">刷新</button>
+        <button class="layui-btn layui-btn-normal"  onclick="export_data();">导出</button>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script src="/skin/js/main/public_report.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/customer_form.js" type="text/javascript" charset="utf-8"></script>
+{/block}

@@ -1,0 +1,39 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--计量单位-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+		<table>
+			<tr>
+				<td>
+					<input type="text" class="layui-input" id="so|name" placeholder="单位名称" >
+				</td>
+				<td>
+					<input type="text" class="layui-input" id="so|number" placeholder="单位编号" >
+				</td>
+				<td>
+					<input type="text" class="layui-input" id="so|data" placeholder="备注信息" >
+				</td>
+				<td class="re_left">
+				    <button class="layui-btn layui-btn-primary" onclick="so()" style="margin:0"><i class="layui-icon">&#xe615;</i></button>
+		        </td>
+			</tr>
+		</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        {if condition="(check_root('auxiliary_add'))"}        
+            <button class="layui-btn layui-btn-normal"  onclick="unit_info();">新增</button>
+        {/if}    
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script type="text/javascript" charset="utf-8">
+    var root_del={if condition="(check_root('auxiliary_del'))"}true{else /}false{/if};
+    var root_edit={if condition="(check_root('auxiliary_edit'))"}true{else /}false{/if};
+</script>
+<script src="/skin/js/main/unit.js" type="text/javascript" charset="utf-8"></script>
+{/block}

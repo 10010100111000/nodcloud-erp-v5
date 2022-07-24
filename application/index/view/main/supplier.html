@@ -1,0 +1,50 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--供应商-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+    		<table>
+    			<tr>
+    				<td>
+    					<input type="text" class="layui-input" id="so|name" placeholder="供应商名称" >
+    				</td>
+    				<td>
+    					<input type="text" class="layui-input" id="so|number" placeholder="供应商编号">
+    				</td>
+					<td>
+    					<input type="text" class="layui-input" id="so|contacts" placeholder="联系人" >
+    				</td>
+    				<td class="re_left">
+    				    <button class="layui-btn layui-btn-primary" onclick="more(this)" ape="hide"><i class="layui-icon">&#xe61a;</i></button> 
+    				    <button class="layui-btn layui-btn-primary" onclick="so()" style="margin:0"><i class="layui-icon">&#xe615;</i></button>
+    		        </td>
+				</tr>
+				<tr style="display:none;">
+				    <td>
+    					<input type="text" class="layui-input" id="so|tel" placeholder="联系电话" >
+    				</td>
+        		    <td colspan="2">
+        			    <input type="text" class="layui-input" id="so|data" placeholder="备注信息">
+        			</td>
+        		</tr>
+    		</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        <button class="layui-btn layui-btn-danger" onclick="export_data();">导出</button>
+        <button class="layui-btn" onclick="import_data();">导入</button>
+        {if condition="(check_root('basics_add'))"}
+            <button class="layui-btn layui-btn-normal"  onclick="supplier_info();">新增</button>
+        {/if}
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script type="text/javascript" charset="utf-8">
+    var root_del={if condition="(check_root('basics_del'))"}true{else /}false{/if};
+    var root_edit={if condition="(check_root('basics_edit'))"}true{else /}false{/if};
+</script>
+<script src="/skin/js/main/supplier.js" type="text/javascript" charset="utf-8"></script>
+{/block}

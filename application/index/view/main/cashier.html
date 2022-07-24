@@ -1,0 +1,335 @@
+{extend name="main/main" /}
+{block name="title"}{$sys.3.info.cashier_name} - 收银台{/block}
+{block name="main"}
+<link rel="stylesheet" href="/skin/css/public/select2.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/main/cashier.css" type="text/css" media="all" />
+<div class="pay_top">
+    <h1>{$sys.3.info.cashier_name} - 收银台</h1>
+</div>
+<div class="layui-row cashier_main">
+    <div class="layui-col-xs3 left">
+        <div class="layui-tab layui-tab-brief" lay-filter="tabs">
+          <ul class="layui-tab-title">
+            <li class="layui-this" lay-id="ape_goods">商品</li>
+            <li>服务</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div id="goods_info">
+                    <div class="info_top">
+                        <table class="layui-table" lay-skin="line">
+                            <colgroup>
+                                <col width="46%">
+                                <col width="18%">
+                                <col width="18%">
+                                <col width="18%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>商品名称</th>
+                                    <th>数量</th>
+                                    <th>金额</th>
+                                    <th>操作</th>
+                                </tr> 
+                            </thead>
+                            <tbody id="goods_tabinfo"></tbody>
+                        </table>   
+                    </div>
+                    <div class="layui-row info_bom">
+                        <div class="layui-col-xs6">
+                            <p class='count'>合计<span id="goods_count">0</span>项</p>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <p class='money'>￥<span id="goods_money">0</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div id="item_info">
+                    <div class="info_top">
+                        <table class="layui-table" lay-skin="line">
+                            <colgroup>
+                                <col width="46%">
+                                <col width="18%">
+                                <col width="18%">
+                                <col width="18%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>服务名称</th>
+                                    <th>数量</th>
+                                    <th>金额</th>
+                                    <th>操作</th>
+                                </tr> 
+                            </thead>
+                            <tbody id="item_tabinfo"></tbody>
+                        </table>   
+                    </div>
+                    <div class="layui-row info_bom">
+                        <div class="layui-col-xs6">
+                            <p class='count'>合计<span id="item_count">0</span>项</p>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <p class='money'>￥<span id="item_money">0</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="layui-col-xs9 right">
+        <div class="right_main" id="goods_list">
+            <div class="right_top">
+                <div class="right_top_left">
+                    <span>商品</span>
+                </div>
+                <div class="right_top_right">
+                    <button class="layui-btn layui-btn-primary" onclick="so_goods();"><i class="layui-icon">&#xe615;</i></button>
+                    <input class="layui-input" id="goods_soinfo" type="text" placeholder="商品名称 / 首拼字母 / 条形码" >
+                </div>
+            </div>
+            <div class="layui-row right_bom"></div>
+            <div id="goods_page"></div>
+        </div>
+        <div class="right_main" id="show_goods_info" ape="0">
+            <div class="set_top" onclick="hide_goods_info();">
+                <div class="set_top_left">
+                    <span>商品详情</span>
+                </div>
+                <div class="set_top_right">
+                    <i class="layui-icon">&#x1006;</i> 
+                </div>
+            </div>
+            <div class="layui-row set_bom">
+                <div class="layui-form layui-form-pane">
+                	<div class="layui-form-item"><label class="layui-form-label">商品名称</label>
+                		<div class="layui-input-block"><input type="text" id="goods-name" class="layui-input" disabled="disabled"></div>
+                	</div>
+                	<div class="layui-form-item attr"><label class="layui-form-label">辅助属性</label>
+                		<div class="layui-input-block"><input type="text" id="goods-attr" class="layui-input" disabled="disabled"></div>
+                	</div>
+                	<div class="layui-form-item ape_serial"><label class="layui-form-label">串码</label>
+                		<div class="layui-input-block">
+                		    <select id="goods-set_serial" class="layui-input" multiple lay-ignore></select>
+                		</div>
+                	</div>
+                	<div class="layui-form-item set_tip"><label class="layui-form-label">数量</label>
+                		<div class="layui-input-block"><input type="text" id="goods-set_nums" placeholder="请输入数量" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item set_tip"><label class="layui-form-label">零售单价</label>
+                		<div class="layui-input-block"><input type="text" id="goods-set_price" placeholder="请输入单价" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item set_tip discount"><label class="layui-form-label">折扣</label>
+                		<div class="layui-input-block"><input type="text" id="goods-set_discount" placeholder="请输入折扣" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item"><label class="layui-form-label">零售金额</label>
+                		<div class="layui-input-block"><input type="text" id="goods-set_total" class="layui-input" disabled="disabled"></div>
+                	</div>
+                	<div class="layui-form-item integral"><label class="layui-form-label">赠送积分</label>
+                		<div class="layui-input-block"><input type="text" id="goods-set_integral" class="layui-input" disabled="disabled"></div>
+                	</div>
+                	<div class="layui-form-item"><label class="layui-form-label">备注信息</label>
+                		<div class="layui-input-block"><input type="text" id="goods-data" placeholder="请输入备注信息" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item ape_batch"><label class="layui-form-label">批次</label>
+                		<div class="layui-input-block"><input type="text" id="goods-batch" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item warehouse"><label class="layui-form-label">所属仓库</label>
+                		<div class="layui-input-block"><input type="text" id="goods-warehouse" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item stock"><label class="layui-form-label">当前库存</label>
+                		<div class="layui-input-block"><input type="text" id="goods-nums" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item brand"><label class="layui-form-label">商品品牌</label>
+                		<div class="layui-input-block"><input type="text" id="goods-brand" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item number"><label class="layui-form-label">商品编号</label>
+                		<div class="layui-input-block"><input type="text" id="goods-number" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item class"><label class="layui-form-label">商品分类</label>
+                		<div class="layui-input-block"><input type="text" id="goods-class" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item spec"><label class="layui-form-label">规格型号</label>
+                		<div class="layui-input-block"><input type="text" id="goods-spec" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item code"><label class="layui-form-label">条形码</label>
+                		<div class="layui-input-block"><input type="text" id="goods-code" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item unit"><label class="layui-form-label">商品单位</label>
+                		<div class="layui-input-block"><input type="text" id="goods-unit" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item stocktip"><label class="layui-form-label">库存预警</label>
+                		<div class="layui-input-block"><input type="text" id="goods-stocktip" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item location"><label class="layui-form-label">商品货位</label>
+                		<div class="layui-input-block"><input type="text" id="goods-location" class="layui-input"></div>
+                	</div>
+                </div>
+            </div>
+        </div>
+        <div class="right_main" id="item_list">
+            <div class="right_top">
+                <div class="right_top_left">
+                    <span>服务</span>
+                </div>
+                <div class="right_top_right">
+                    <button class="layui-btn layui-btn-primary" onclick="so_item();"><i class="layui-icon">&#xe615;</i></button>
+                    <input class="layui-input" id="item_soinfo" type="text" placeholder="服务名称 / 首拼字母" >
+                </div>
+            </div>
+            <div class="layui-row right_bom"></div>
+            <div id="item_page"></div>
+        </div>
+        <div class="right_main" id="show_item_info" ape="0">
+            <div class="set_top" onclick="hide_item_info();">
+                <div class="set_top_left">
+                    <span>服务详情</span>
+                </div>
+                <div class="set_top_right">
+                    <i class="layui-icon">&#x1006;</i> 
+                </div>
+            </div>
+            <div class="layui-row set_bom">
+                <div class="layui-form layui-form-pane">
+                	<div class="layui-form-item"><label class="layui-form-label">服务名称</label>
+                		<div class="layui-input-block"><input type="text" id="item-name" class="layui-input" disabled="disabled"></div>
+                	</div>
+                	<div class="layui-form-item set_tip"><label class="layui-form-label">数量</label>
+                		<div class="layui-input-block"><input type="text" id="item-set_nums" placeholder="请输入数量" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item set_tip"><label class="layui-form-label">单价</label>
+                		<div class="layui-input-block"><input type="text" id="item-set_price" placeholder="请输入单价" class="layui-input"></div>
+                	</div>
+                	<div class="layui-form-item"><label class="layui-form-label">金额</label>
+                		<div class="layui-input-block"><input type="text" id="item-set_total" class="layui-input" disabled="disabled"></div>
+                	</div>
+                	<div class="layui-form-item"><label class="layui-form-label">备注信息</label>
+                		<div class="layui-input-block"><input type="text" id="item-set_data" placeholder="请输入备注信息" class="layui-input"></div>
+                	</div>
+                </div>
+            </div>
+        </div>
+        <div class="right_main" id="settle_info">
+            <div class="set_top" onclick="hide_settle_info();">
+                <div class="set_top_left">
+                    <span>结账信息</span>
+                </div>
+                <div class="set_top_right">
+                    <i class="layui-icon">&#x1006;</i> 
+                </div>
+            </div>
+            <div class="layui-row  layui-form layui-form-pane set_bom bg_fff ">
+                <div class="layui-form settle_top">
+                    <div class="layui-col-xs6">
+                        <fieldset class="layui-elem-field">
+                            <legend>商品价格</legend>
+                            <div class="layui-field-box">
+                                <div class="layui-form-item"><label class="layui-form-label">单据金额</label>
+                            		<div class="layui-input-block"><input type="text" id="settle_goods_total" class="layui-input" disabled="disabled"></div>
+                            	</div>
+                            	<div class="layui-form-item set_tip"><label class="layui-form-label">优惠金额</label>
+                            		<div class="layui-input-block"><input type="text" id="settle_goods_discount" class="layui-input" value="0" placeholder="请输入优惠金额"></div>
+                            	</div>
+                            	<div class="layui-form-item"><label class="layui-form-label">应收金额</label>
+                            		<div class="layui-input-block"><input type="text" id="settle_goods_money" class="layui-input" disabled="disabled"></div>
+                            	</div>
+                            	<div class="layui-form-item"><label class="layui-form-label">备注信息</label>
+                            		<div class="layui-input-block"><input type="text" id="settle_goods_data" class="layui-input" placeholder="请输入备注信息"></div>
+                            	</div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="layui-col-xs6">
+                        <fieldset class="layui-elem-field">
+                            <legend>服务价格</legend>
+                            <div class="layui-field-box">
+                                <div class="layui-form-item"><label class="layui-form-label">单据金额</label>
+                            		<div class="layui-input-block"><input type="text" id="settle_item_total" class="layui-input" disabled="disabled"></div>
+                            	</div>
+                            	<div class="layui-form-item set_tip"><label class="layui-form-label">优惠金额</label>
+                            		<div class="layui-input-block"><input type="text" id="settle_item_discount" class="layui-input" value="0" placeholder="请输入优惠金额"></div>
+                            	</div>
+                            	<div class="layui-form-item"><label class="layui-form-label">应收金额</label>
+                            		<div class="layui-input-block"><input type="text" id="settle_item_money" class="layui-input" disabled="disabled"></div>
+                            	</div>
+                            	<div class="layui-form-item"><label class="layui-form-label">备注信息</label>
+                            		<div class="layui-input-block"><input type="text" id="settle_item_data" class="layui-input" placeholder="请输入备注信息"></div>
+                            	</div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="settle_bom">
+                    <fieldset class="layui-elem-field">
+                        <legend>支付信息</legend>
+                        <div class="layui-field-box">
+                            <div class="layui-form-item set_tip"><label class="layui-form-label">购买客户</label>
+                        		<div class="layui-input-block"><input type="text" id="customer" class="layui-input" placeholder="请点击选择" readonly="true" onclick="set_customer(this)" ape=''></div>
+                        	</div>
+                        	<div class="layui-form-item"><label class="layui-form-label">结算金额</label>
+                        		<div class="layui-input-block"><input type="text" id="cashier_money" class="layui-input" disabled="disabled"></div>
+                        	</div>
+                        	<div class="layui-form-item set_tip"><label class="layui-form-label">客户付款</label>
+                        		<div class="layui-input-block"><input type="text" id="customer_money" class="layui-input" placeholder="请输入客户付款金额" value="0"></div>
+                        	</div>
+                        	<div class="layui-form-item"><label class="layui-form-label">找零金额</label>
+                        		<div class="layui-input-block"><input type="text" id="oddchange" class="layui-input" disabled="disabled" value="0"></div>
+                        	</div>
+                        	<div class="layui-form-item set_tip"><label class="layui-form-label">赠送积分</label>
+                        		<div class="layui-input-block"><input type="text" id="integral" class="layui-input" placeholder="请输入赠送积分数值"></div>
+                        	</div>
+                        	<div class="layui-form-item set_tip"><label class="layui-form-label">结算账户</label>
+                    			<div class="layui-input-block">
+                    				<select id="account" class="layui-input" lay-search>
+                    					<option value="">请选择结算账户</option>
+                    				</select>
+                    			</div>
+                    		</div>
+                        	<div class="layui-form-item" pane><label class="layui-form-label">组合支付</label>
+                    			<div class="layui-input-block"><input type="checkbox" id="paycheckbox" lay-skin="switch" lay-text="开|关" lay-filter="paymemu"></div>
+                    		</div>
+                    		<table class="layui-table" id="pay_menu" style="display:none">
+                    			<thead>
+                    				<tr>
+                    					<th>结算账户</th>
+                    					<th>结算金额</th>
+                    					<th>相关操作<i class="layui-icon ico_add">&#xe61f;</i></th>
+                    				</tr>
+                    			</thead>
+                    			<tbody id="pay_menus"></tbody>
+                    		</table>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_bom">
+        <button class="layui-btn layui-btn-primary re_left" onclick="ape_set_tabinfo(tabinfo);"><i class="layui-icon">&#xe614;</i></button>
+        <button class="layui-btn layui-btn-primary re_left" onclick="re();"><i class="layui-icon">&#xe63f;</i> 清空</button>
+        <button class="layui-btn" onclick="settle();"><i class="layui-icon">&#xe605;</i> 结账</button>
+    </div>
+</div>
+<script src="/skin/js/public/select2.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/cashier_goods.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/cashier_item.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/cashier.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+    var tabinfo={php}echo tabinfo('cashier');{/php};
+    var account_default='{php}echo $sys[3]['info']['cashier_actual']{/php}';
+    var account_arr={php}echo json_encode(db('account')->field('id,name')->select()){/php};
+    var auto_print={$sys.3.info.cashier_print};
+    {notempty name="sys.3.info.cashier_customer"}
+        {php}$def_customer=db('customer')->where(['id'=>$sys[3]['info']['cashier_customer']])->find();{/php}
+        $('#customer').attr('ape','{$def_customer.id}').val('{$def_customer.name}');
+    {/notempty}
+    {empty name="sys.1.info.serial"}
+        $('.ape_serial').hide();
+    {/empty}
+    {empty name="sys.1.info.batch"}
+        $('.ape_batch').hide();
+    {/empty}
+</script>
+{/block}

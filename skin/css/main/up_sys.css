@@ -1,0 +1,18 @@
+/*系统升级*/
+.boxs{
+    text-align: center;
+    margin-top: 10%;
+}
+.boxs img{
+    width: 90px;
+    height: 90px;
+}
+.boxs p{
+    font-size: 14px;
+    margin-top: 1%;
+    letter-spacing: 2px;
+    color: #333;
+}
+.boxs a{
+    margin-top: 12px;
+}

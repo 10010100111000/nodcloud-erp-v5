@@ -1,0 +1,24 @@
+#pay_menu th{
+    text-align: center;
+}
+#pay_menus td{
+    padding: 0;
+    text-align: center;
+}
+#pay_menus select , #pay_menus input{
+    width: 100%;
+    height: 36px;
+    border: none;
+    text-align: center;
+}
+#pay_menus .ico_add{
+    vertical-align: middle;
+    margin-left: 6px;
+}
+#pay_menus .ico_one{
+    font-size: 16px;
+}
+#pay_menus .ico_two{
+    font-size: 20px;
+    margin-left: 4px;
+}

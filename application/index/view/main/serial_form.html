@@ -1,0 +1,39 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--串码跟踪表-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+    	<table>
+    		<tr>
+    		    <td>
+					<input type="text" id="so|name" placeholder="商品名称/首字母" class="layui-input" >
+				</td>
+    		    <td>
+    			    <input type="text" id="so|code" placeholder="串码" class="layui-input" >
+    			</td>
+    			<td>
+    				<select class="layui-input" id="so|type">
+    			        <option value="0">全部状态</option>
+    			        <option value="1">未销售</option>
+    			        <option value="2">已销售</option>
+    			        <option value="3">不在库</option>
+    			    </select>
+    			</td>
+    			<td class="re_left">
+    			    <button class="layui-btn layui-btn-primary" onclick="so()"><i class="layui-icon">&#xe615;</i></button>
+    	        </td>
+    		</tr>
+    	</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        <button class="layui-btn layui-btn-danger" onclick="export_data();">导出</button>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script src="/skin/js/main/public_report.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/serial_form.js" type="text/javascript" charset="utf-8"></script>
+{/block}

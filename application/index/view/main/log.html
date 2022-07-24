@@ -1,0 +1,48 @@
+    {extend name="main/main" /}
+{block name="main"}
+<!--日志-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+		<table>
+			<tr>
+				<td>
+					<input type="text" class="layui-input" id="so|text" placeholder="操作内容" >
+				</td>
+				<td>
+					<select id="so|user" class="layui-input" lay-search>
+                        <option value="0">全部用户</option>
+            		    {volist name="user" id="user_vo"}
+                            <option value="{$user_vo.id}">{$user_vo.name}</option>
+                        {/volist}
+            		</select>
+				</td>
+				<td class="re_left">
+				    <button class="layui-btn layui-btn-primary" onclick="more(this)" ape="hide"><i class="layui-icon">&#xe61a;</i></button> 
+				    <button class="layui-btn layui-btn-primary" onclick="so()" style="margin:0"><i class="layui-icon">&#xe615;</i></button>
+		        </td>
+			</tr>
+			<tr style="display:none;">
+			    <td>
+					<input type="text" class="layui-input" id="so|start_time" placeholder="开始日期" >
+				</td>
+    		    <td>
+				    <input type="text" class="layui-input" id="so|end_time" placeholder="结束日期" >
+				</td>
+				
+    		</tr>
+		</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        {if condition="(check_root('senior_del'))"}
+            <button class="layui-btn layui-btn-normal"  onclick="empty_log();">清空日志</button>
+        {/if}
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script src="/skin/js/main/public_report.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/log.js" type="text/javascript" charset="utf-8"></script>
+{/block}

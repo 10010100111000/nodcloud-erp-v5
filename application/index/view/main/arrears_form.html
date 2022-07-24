@@ -1,0 +1,37 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--往来单位欠款表-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+    	<table>
+    		<tr>
+    		    <td>
+    			    <input type="text" class="layui-input" id="so|number" placeholder="单位编号" >
+    			</td>
+    			<td>
+    				<input type="text" class="layui-input" id="so|name" placeholder="单位名称" >
+    			</td>
+    			<td>
+    			    <select class="layui-input" id="so|type">
+    			        <option value="0">客户</option>
+    			        <option value="1">供应商</option>
+    			    </select>
+    			</td>
+    			<td class="re_left">
+    			    <button class="layui-btn layui-btn-primary" onclick="so()"><i class="layui-icon">&#xe615;</i></button>
+    	        </td>
+    		</tr>
+    	</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        <button class="layui-btn layui-btn-danger" onclick="export_data();">导出</button>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script src="/skin/js/main/public_report.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/arrears_form.js" type="text/javascript" charset="utf-8"></script>
+{/block}

@@ -1,0 +1,533 @@
+{extend name="main/main" /} {block name="main"}
+<!--系统设置-->
+<link rel="stylesheet" href="/skin/css/main/sys.css" type="text/css" media="all" />
+<div class="layui-tab layui-tab-brief" style="margin-top: 0;">
+    <ul class="layui-tab-title">
+        <li class="layui-this">基础信息</li>
+        <li>功能设置</li>
+        <li>收银设置</li>
+        <li>编码规则</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-form layui-form-pane">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">系统名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="sys_name" placeholder="请输入系统名称" class="layui-input" value="{$sys.0.info.sys_name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">公司名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="company_name" placeholder="请输入公司名称" class="layui-input" value="{$sys.0.info.company_name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">公司电话</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="company_tel" placeholder="请输入公司电话" class="layui-input" value="{$sys.0.info.company_tel}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">公司地址</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="company_add" placeholder="请输入公司地址" class="layui-input" value="{$sys.0.info.company_add}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    {if condition="(check_root('senior_add'))"}
+                        <button class="layui-btn layui-btn-primary" onclick="save_info();">保存基础信息</button>
+                    {/if}
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-item">
+            <div class="layui-form layui-form-pane">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">默认阀值</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="threshold" placeholder="请输入默认库存预警阀值" class="layui-input" value="{$sys.1.info.threshold}">
+                    </div>
+                    <label class="layui-form-label">首页报表天数</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="homeday" placeholder="请输入首页报表天数" class="layui-input" value="{$sys.1.info.homeday}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">默认结算账户</label>
+                    <div class="layui-input-inline">
+                        <select id="default_account" class="layui-input">
+                            <option value="0">暂不设置</option>
+                            {volist name="account" id="account_vo"}
+                                <option value="{$account_vo.id}">{$account_vo.name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                    <label class="layui-form-label">默认打印纸张</label>
+                    <div class="layui-input-inline">
+                        <select id="default_print" class="layui-input">
+                            <option value="0">A4纸张</option>
+                            <option value="1">2等分纸</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">制单人可选</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" id="user_choose" lay-skin="switch" lay-text="开|关" {notempty name="sys.1.info.user_choose"}checked{/notempty}>
+                        <span>开启后制单人可选，反之则为登录账户。</span>
+                    </div>
+                </div>
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">审核功能</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" id="auditing" lay-skin="switch" lay-text="开|关" {notempty name="sys.1.info.auditing"}checked{/notempty}>
+                        <span>开启后单据需经审核才会发生数据改变。</span>
+                    </div>
+                </div>
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">串码功能</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" id="serial" lay-skin="switch" lay-text="开|关" {notempty name="sys.1.info.serial"}checked{/notempty}>
+                        <span>开启后录入单据时将启用串码功能。</span>
+                    </div>
+                </div>
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">批次功能</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" id="batch" lay-skin="switch" lay-text="开|关" {notempty name="sys.1.info.batch"}checked{/notempty}>
+                        <span>开启后录入单据时将启用批次功能。</span>
+                    </div>
+                </div>
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">隔行背景</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" id="even" lay-skin="switch" lay-text="开|关" {notempty name="sys.1.info.even"}checked{/notempty}>
+                        <span>开启后数据表格将加上隔行背景。</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    {if condition="(check_root('senior_add'))"}
+                        <button class="layui-btn layui-btn-primary" onclick="save_set();">保存功能设置</button>
+                    {/if}
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-item">
+            <div class="layui-form layui-form-pane">
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">收银功能</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" id="cashier" lay-skin="switch" lay-text="开|关" {notempty name="sys.3.info.cashier"}checked{/notempty}>
+                        <span>开启后将启用收银台功能。</span>
+                    </div>
+                </div>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend style="font-size: 16px;">收银台功能配置</legend>
+                </fieldset>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">收银标题</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="cashier_name" placeholder="请输入收银标题" class="layui-input" value="{$sys.3.info.cashier_name}">
+                    </div>
+                    <label class="layui-form-label">默认客户</label>
+                    <div class="layui-input-inline">
+                        <select id="cashier_customer" lay-search>
+                            <option value="0" ape="none">暂不设置</option>
+                		    {volist name="customer" id="customer_vo"}
+                                <option value="{$customer_vo.id}" ape="{$customer_vo.number}">{$customer_vo.name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">默认收银账户</label>
+                    <div class="layui-input-inline">
+                        <select id="cashier_actual" lay-search>
+                            <option value="">请点击选择</option>
+                            {volist name="account" id="account_vo"}
+                                <option value="{$account_vo.id}">{$account_vo.name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                    <label class="layui-form-label">服务收款账户</label>
+                    <div class="layui-input-inline">
+                        <select id="cashier_item" lay-search>
+                            <option value="">请点击选择</option>
+                            {volist name="account" id="account_vo"}
+                                <option value="{$account_vo.id}">{$account_vo.name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">自动打印小票</label>
+                    <div class="layui-input-inline">
+                        <select id="cashier_print" lay-search>
+                            <option value="0">否</option>
+                            <option value="1">是</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    {if condition="(check_root('senior_add'))"}
+                        <button class="layui-btn layui-btn-primary" onclick="save_cashier();">保存收银设置</button>
+                    {/if}    
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-item">
+            <div class="layui-form">
+                <table class="layui-table" id="number">
+                    <thead>
+                        <tr>
+                            <th width="100px">编码类型</th>
+                            <th width="60px">是否启用</th>
+                            <th width="90px">编码前缀</th>
+                            <th>年</th>
+                            <th>月</th>
+                            <th>日</th>
+                            <th>时</th>
+                            <th>分</th>
+                            <th>秒</th>
+                            <th width="60px">起始数</th>
+                            <th>示例</th>
+                        </tr> 
+                    </thead>
+                    <tbody>
+                        <tr ape="customer">
+                            <td>客户模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="supplier">
+                            <td>供应商模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="goods">
+                            <td>商品模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="warehouse">
+                            <td>仓库模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="unit">
+                            <td>单位模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="brand">
+                            <td>品牌模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="purchase">
+                            <td>购货模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="opurchase">
+                            <td>采购订单模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="rpurchase">
+                            <td>采购入库单模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="repurchase">
+                            <td>购货退货模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="sale">
+                            <td>销货模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="resale">
+                            <td>销货退货模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        
+                        <tr ape="cashier">
+                            <td>零售模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="recashier">
+                            <td>零售退货模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="itemorder">
+                            <td>服务订单模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="exchange">
+                            <td>积分兑换模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="allocation">
+                            <td>调拨模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="otpurchase">
+                            <td>其他入库模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="otsale">
+                            <td>其他出库模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="gather">
+                            <td>收款模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="payment">
+                            <td>付款模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="otgather">
+                            <td>其他收入模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="otpayment">
+                            <td>其他支出模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                        <tr ape="eft">
+                            <td>资金调拨模块</td>
+                            <td><input type="checkbox" lay-skin="primary"></td>
+                            <td><input type="text" placeholder="编码前缀" class="layui-input"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="checkbox" lay-skin="primary" lay-filter="number"></td>
+                            <td><input type="text" placeholder="起始数" class="layui-input"></td>
+                            <td><span>默认</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="layui-form-item">
+                    {if condition="(check_root('senior_add'))"}
+                        <button class="layui-btn layui-btn-primary" onclick="save_number();">保存规则</button>
+                    {/if}    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf-8">
+    $('#default_account').val('{$sys.1.info.default_account}');
+    $('#default_print').val('{$sys.1.info.default_print}');
+    {notempty name="$sys.3.info.cashier"}
+        $('#cashier_customer').val('{$sys.3.info.cashier_customer}');
+        $('#cashier_actual').val('{$sys.3.info.cashier_actual}');
+        $('#cashier_item').val('{$sys.3.info.cashier_item}');
+        $('#cashier_print').val('{$sys.3.info.cashier_print}');
+    {/notempty}
+</script>
+<script src="/skin/js/main/sys.js" type="text/javascript" charset="utf-8"></script>{/block}

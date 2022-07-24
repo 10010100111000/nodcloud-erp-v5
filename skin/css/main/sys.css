@@ -1,0 +1,24 @@
+.layui-form-item span{
+    vertical-align: sub;
+    letter-spacing: 1px;
+    color: #333;
+}
+.layui-form-pane .layui-form-label{
+    text-overflow: clip;
+}
+#number{
+    width: 900px;
+    margin-top: 0;
+}
+#number th ,#number td {
+    text-align: center;
+}
+#number td{
+    padding: 0;
+}
+#number input{
+    border: none;
+}
+#number span{
+    padding: 0 10px;
+}

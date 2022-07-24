@@ -1,0 +1,39 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--商品利润表-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+    	<table>
+    		<tr>
+    		    <td>
+					<input type="text" id="so|name" placeholder="商品名称/首字母" class="layui-input" >
+				</td>
+    		    <td>
+    			    <input type="text" class="layui-input" id="so|start_time" placeholder="开始日期" value="{php}echo date('Y-m-01', strtotime(date("Y-m-d")));{/php}" >
+    			</td>
+    			<td>
+    				<input type="text" class="layui-input" id="so|end_time" placeholder="结束日期" value="{php}echo date('Y-m-d', time());{/php}" >
+    			</td>
+    			<td class="re_left">
+    			    <button class="layui-btn layui-btn-primary" onclick="so()"><i class="layui-icon">&#xe615;</i></button>
+    	        </td>
+    		</tr>
+    	</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-primary" onclick="ape_set_tabinfo(tabinfo);"><i class="layui-icon">&#xe614;</i></button>
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        <button class="layui-btn layui-btn-danger" onclick="export_data();">导出</button>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script type="text/javascript" charset="utf-8">
+    var tabinfo={php}echo tabinfo('ape_goods_form');{/php};
+    var batch_type={empty name="sys.info.batch"}false{else/}true{/empty};
+</script>
+<script src="/skin/js/main/public_report.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/ape_goods_form.js" type="text/javascript" charset="utf-8"></script>
+{/block}

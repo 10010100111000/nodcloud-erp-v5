@@ -1,0 +1,38 @@
+
+.sys_info td{
+    width: 20%;
+    padding: 10px;
+}
+.sys_info td a{
+    display: block;
+    color: #FFF;
+    padding: 4px;
+    padding: 10px;
+}
+.sys_info td a{
+    font-size: 12px;
+    line-height: 18px;
+}
+.sys_info td b{
+    display: block;
+    font-size: 12px;
+    text-align: right;
+}
+.sys_info .t1{
+    background: #68bbef;
+}
+.sys_info .t2{
+    background: #f7c35b;
+}
+.sys_info .t3{
+    background: #73a2e1;
+}
+.sys_info .t4{
+    background: #f77766;
+}
+.sys_info .t5{
+    background: #acda65;
+}
+.layui-tab{
+    margin: 0;
+}

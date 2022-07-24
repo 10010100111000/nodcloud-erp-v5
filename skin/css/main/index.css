@@ -1,0 +1,211 @@
+html,body{
+    height:100%;
+    overflow: hidden;
+}
+/*头部开始*/
+.top{
+    height: 52px;
+}
+.top .left{
+    float: left;
+    width: 58%;
+    height: 100%;
+    margin-left: 1%;
+}
+.top .left h1{
+    font-size: 18px;
+    line-height: 52px;
+}
+.top .right{
+    float: right;
+    width: 40%;
+    height: 100%;
+}
+.top .right ul{
+    line-height: 52px;
+}
+.top .right li{
+    float: right;
+    padding: 0 1.6%;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+.top .right li:hover{
+    background: #eee;
+}
+
+.top .right li i{
+    font-size: 16px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+.main{
+    height: calc(100% - 52px);
+}
+.main .left{
+    float: left;
+    width: 120px;
+    height: 100%;
+    background: #313841 url('/skin/images/main/bottom.png') no-repeat bottom;
+}
+
+
+.main .left .tab{
+    display: block;
+    width: 80%;
+    
+    margin: 0 auto;
+    border: 1px solid #346ac9;
+    border-radius: 3px;
+    margin-top: 25px;
+    overflow: hidden;
+    background: #000;
+    margin-bottom: 9px;
+}
+.main .left .tab p{
+    color: #fff;
+    text-align: center;
+    line-height: 28px;
+    cursor: pointer;
+    float: left;
+    font-size: 12px;
+    width: 50%;
+}
+
+.set_tab_show{
+    background: #346AC9;
+}
+/*系统功能*/
+.sys ul{
+    
+}
+.sys li{
+    text-align: center;
+    padding: 18px 0;
+    color: #fff;
+    cursor: pointer;
+}
+.sys li:hover{
+    background: #404852;
+}
+.sys li i{
+    font-size: 24px;
+    vertical-align: middle;
+}
+.sys li span{
+    margin-left: 12px;
+}
+.more{
+    display: none;
+    position: absolute;
+    left: 120px;
+    min-width: 130px;
+    border: 3px solid rgba(199,199,199,0.8);
+    border-radius: 0px 3px 3px 0px;
+    border-left: none;
+    background: #fff;
+    z-index: 999;
+}
+.more .nav{
+    float: left;
+    padding: 0 6px;
+    border-right: 1px dashed #ccc;
+}
+.more h2{
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 6px;
+    color: #000;
+    letter-spacing: 1px;
+}
+.more p{
+    color: #333;
+    min-width: 110px;
+    line-height: 32px;
+    margin: 2px 0px;
+    padding-left: 10px;
+    text-align: left;
+}
+.more p:hover{
+    background: #eee;
+}
+.sys .more div{
+    position: relative;
+} 
+.sys tip{
+    display: none;
+    position: absolute;
+    right: 3px;
+    top: 6px;
+    font-size: 14px;
+    line-height: 14px;
+    border: 1px solid #d2d2d2;
+    padding: 2px;
+    z-index: 999999;
+    color: #666;
+}
+/*常用功能*/
+.often{
+    display: none;
+}
+.often li{
+    text-align: center;
+    padding: 15px 0;
+    color: #fff;
+    cursor: pointer;
+}
+.often li:hover{
+    background: #404852;
+}
+.often li i{
+    font-size: 24px;
+    vertical-align: middle;
+}
+.often li span{
+    margin-left: 6px;
+}
+.main .right{
+    float: right;
+    width: calc(100% - 120px);
+    height: 100%;
+    overflow: hidden;
+}
+.main .right .layui-tab-card{
+    margin:0;
+    height: 100%;
+}
+/*框架*/
+.right .layui-tab-content{
+    padding:0;
+    height: calc(100% - 42px);
+}
+.right .layui-tab-content .layui-tab-item{
+    height: 100%;
+}
+
+.main .right iframe{
+    width: 100%;
+    height: 100%;
+    
+}
+.top_more{
+    display: none;
+    position: absolute;
+    top: 52px;
+    left: 0;
+    width: 96%;
+    border: 2px solid rgba(199,199,199,0.8);
+    border-radius: 0px 3px 3px 0px;
+    background: #fff;
+    z-index: 999;
+}
+.top_more p{
+    line-height: 36px;
+}
+.top_more p:hover{
+    background: #F2F2F2;
+}
+.pop_info{
+    padding: 10px 6px;
+}

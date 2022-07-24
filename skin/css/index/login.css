@@ -1,0 +1,71 @@
+.background {
+    position: absolute;
+    overflow: hidden;
+    z-index: -10;
+    width: 100%;
+    height: 100%;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+.login{
+    width: 436px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8%;
+    box-shadow: 0px 10px 60px rgba(0,0,0,0.4);
+}
+.title{
+    height:150px;
+    background: #6699cc;
+}
+.main{
+    background: #fff;
+    padding: 28px 18px;
+}
+.text i{
+    top: 9px;
+    font-size: 36px;
+    margin-right: 10px;
+}
+.text_one{
+    padding-top: 10%;
+    font-size: 32px;
+    color: #fff;
+    text-align:center;
+    -webkit-box-reflect: below -4px -webkit-gradient(linear,left top,left bottom,from(transparent),to(rgba(255,255,255,0.1)))
+}
+.text_two{
+    padding-top: 10%;
+    padding-right:12px;
+    font-size: 12px;
+    color: #aaddff;
+    text-align:right;
+}
+.input-group{
+    padding: 10px 0px;
+}
+button{
+    margin-top: 12px;
+}
+.bom{
+    color: #eee;
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+    width: 98%;
+    background: #444;
+    background: rgba(0,0,0,0.3);
+    padding: 10px;
+}
+.bom p{
+    margin: 0;
+}
+/*重置框架*/
+.layui-form-pane .layui-form-label {
+    width: 90px;
+}
+.layui-form-pane .layui-input-block {
+    margin-left: 90px;
+}

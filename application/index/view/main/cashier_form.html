@@ -1,0 +1,86 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--零售单报表-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+    	<table>
+    		<tr>
+    			<td>
+    				<input type="text" class="layui-input" id="so|goods" placeholder="商品名称/首拼" >
+    			</td>
+    			<td>
+    			    <input type="text" class="layui-input" id="so|number" placeholder="单据编号" >
+    			    
+    			</td>
+    			<td>
+    			    <input type="text" class="layui-input" id="so|customer" placeholder="全部客户" readonly="true" onclick="set_customer(this)" ape='0'>
+    			</td>
+    			<td class="re_left">
+    			    <button class="layui-btn layui-btn-primary" onclick="more(this)" ape="hide"><i class="layui-icon">&#xe61a;</i></button> 
+    			    <button class="layui-btn layui-btn-primary" onclick="so()"><i class="layui-icon">&#xe615;</i></button>
+    	        </td>
+    		</tr>
+    		<tr style="display:none;">
+    		    <td>
+    			    <input type="text" class="layui-input" id="so|start_time" placeholder="开始日期" >
+    			</td>
+    			<td>
+    				<input type="text" class="layui-input" id="so|end_time" placeholder="结束日期" >
+    			</td>
+    			<td>
+    			    <select class="layui-input" id="so|warehouse" lay-search>
+    			        <option value="0">全部仓库</option>
+            		    {volist name="warehouse" id="warehouse_vo"}
+                            <option value="{$warehouse_vo.id}">{$warehouse_vo.name}</option>
+                        {/volist}
+    			    </select>
+    				
+    			</td>
+    		</tr>
+    		<tr style="display:none;">
+    		    <td>
+    			    <select class="layui-input" id="so|user" lay-search>
+    			        <option value="0">全部制单人</option>
+            		    {volist name="user" id="user_vo"}
+                            <option value="{$user_vo.id}">{$user_vo.name}</option>
+                        {/volist}
+    			    </select>
+    			</td>
+    			<td>
+    				<select class="layui-input" id="so|account" lay-search>
+    			        <option value="0">全部结算账户</option>
+            		    {volist name="account" id="account_vo"}
+                            <option value="{$account_vo.id}">{$account_vo.name}</option>
+                        {/volist}
+    			    </select>
+    			</td>
+    			<td>
+    			    <select class="layui-input" id="so|type">
+    			        <option value="0">审核状态</option>
+    			        <option value="1">未审核</option>
+    			        <option value="2">已审核</option>
+    			    </select>
+    			</td>
+    		</tr>
+    		<tr style="display:none;">
+    		    <td colspan="3">
+    			    <input type="text" class="layui-input" id="so|data" placeholder="备注信息">
+    			</td>
+    		</tr>
+    	</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+        <button class="layui-btn layui-btn-danger" onclick="export_data();">导出</button>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script type="text/javascript" charset="utf-8">
+    var root_del={if condition="(check_root('cashier_del'))"}true{else /}false{/if};
+</script>
+<script src="/skin/js/main/public_report.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/cashier_form.js" type="text/javascript" charset="utf-8"></script>
+{/block}

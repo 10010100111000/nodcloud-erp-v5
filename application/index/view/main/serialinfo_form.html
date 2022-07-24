@@ -1,0 +1,44 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--商品进销详情表-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane" style="width:100%;">
+        <table>
+			<tr>
+			    <td style="display:none;">
+					<input type="text"  id="so|id" value="{$Think.get.id}" >
+				</td>
+				<td style="width: 33%;">
+				    <div class="layui-form-item">
+                        <label class="layui-form-label">商品名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" value="{$Think.get.name}" disabled="disabled">
+                        </div>
+                    </div>
+				</td>
+				<td style="width: 33%;">
+				    <div class="layui-form-item">
+                        <label class="layui-form-label">辅助属性</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" value="{$Think.get.attr}" disabled="disabled">
+                        </div>
+                    </div>
+				</td>
+				<td style="width: 33%;">
+				    <div class="layui-form-item">
+                        <label class="layui-form-label">串码</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" value="{$Think.get.code}" disabled="disabled">
+                        </div>
+                    </div>
+				</td>
+			</tr>
+		</table>
+    </div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script src="/skin/js/main/public_report.js" type="text/javascript" charset="utf-8"></script>
+<script src="/skin/js/main/serialinfo_form.js" type="text/javascript" charset="utf-8"></script>
+{/block}

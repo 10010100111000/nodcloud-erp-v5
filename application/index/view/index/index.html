@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{$Think.config.sys_name} - APE软件中心</title>
+        <meta name="robots" content="noarchive">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+        <link rel="stylesheet" href="/skin/css/layui.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="/skin/css/index/login.css" type="text/css" media="all" />
+    </head>
+    <body>
+        <img class="background" />
+        <!--登录框开始-->
+        <div class="login">
+            <div class="title">
+                <div class="text">
+                    <p class="text_one"><i class="layui-icon">&#xe628;</i>{$Think.config.sys_name}</p>
+                    <p class="text_two">NODCLOUD.COM</p>
+                </div>
+            </div>
+            <div class="main layui-form layui-form-pane">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">账号：</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="user" placeholder="请输入账号" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码：</label>
+                    <div class="layui-input-block">
+                        <input type="password" id="pwd" placeholder="请输入密码" class="layui-input">
+                    </div>
+                </div>
+                <button class="layui-btn layui-btn-normal" onclick="login();" style="width: 100%;margin: 0;">安全登陆</button>
+            </div>
+        </div>
+        <!--登录框结束-->
+        <!--底部开始-->
+        <div class="bom">
+            <p>APE_ERP {php}echo config('web_ver');{/php} | Copyright © NODCLOUD.COM All rights reserved.</p>
+        </div>
+        <!--底部结束-->
+        <script src="/skin/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/skin/js/layui.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/skin/js/index/login.js" type="text/javascript" charset="utf-8"></script>
+    </body>
+</html>

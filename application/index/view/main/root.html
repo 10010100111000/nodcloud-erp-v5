@@ -1,0 +1,33 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--权限设置-->
+<link rel="stylesheet" href="/skin/css/main/public_class.css" type="text/css" media="all" />
+<div class="operation">
+    <div class="so layui-form layui-form-pane">
+    		<table>
+    			<tr>
+    				<td>
+    					<input type="text" class="layui-input" id="so|name" placeholder="职员名称">
+    				</td>
+    				<td>
+    					<input type="text" class="layui-input" id="so|user" placeholder="职员账号">
+    				</td>
+    				<td class="re_left">
+    				    <button class="layui-btn layui-btn-primary" onclick="so()" style="margin:0"><i class="layui-icon">&#xe615;</i></button>
+    		        </td>
+				</tr>
+    		</table>
+    </div>
+    <div class="set">
+        <button class="layui-btn layui-btn-warm" onclick="re();">刷新</button>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<hr />
+<table id="ape_table"></table>
+<script type="text/javascript" charset="utf-8">
+    var cashier_type={empty name='sys.info.cashier'}false{else/}true{/empty};
+    var root_edit={if condition="(check_root('senior_edit'))"}true{else /}false{/if};
+</script>
+<script src="/skin/js/main/root.js" type="text/javascript" charset="utf-8"></script>
+{/block}

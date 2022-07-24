@@ -1,0 +1,19 @@
+.print_tip{
+    
+}
+.print_tip span{
+    display: block;
+    padding: 3px 6px;
+    font-weight: bold;
+}
+.print_tip li{
+    line-height: 25px;
+}
+.print_tip p{
+    text-align: center;
+    letter-spacing: 12px;
+    margin-top: 16px;
+}
+#box{
+    display: none;
+}

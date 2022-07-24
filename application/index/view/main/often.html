@@ -1,0 +1,120 @@
+{extend name="main/main" /}
+{block name="main"}
+<!--常用功能-->
+<link rel="stylesheet" href="/skin/css/main/public_form.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/skin/css/main/often.css" type="text/css" media="all" />
+<div class="set_btn">
+    {if condition="(check_root('auxiliary_add'))"}
+        <button class="layui-btn layui-btn-normal" onclick="save();">保存配置</button>
+    {/if}
+    <button class="layui-btn" onclick="ape_re();">重新载入</button>
+</div>
+<div class="show_box layui-form">
+    <fieldset class="layui-elem-field layui-field-title">
+      <legend>购货相关</legend>
+    </fieldset>
+    <input type="checkbox" set='set_tab("purchase","购货单","/index/main/purchase");' lay-filter="often" title="购货单">
+    <input type="checkbox" set='set_tab("purchase_form","购货单报表","/index/main/purchase_form");' lay-filter="often" title="购货单报表">
+    <input type="checkbox" set='set_tab("purchase_bill","购货对账单","/index/main/purchase_bill");' lay-filter="often" title="购货对账单">
+    <input type="checkbox" set='set_tab("repurchase","购货退货单","/index/main/repurchase");' lay-filter="often" title="购货退货单">
+    <input type="checkbox" set='set_tab("repurchase_form","购货退货单报表","/index/main/repurchase_form");' lay-filter="often" title="购货退货单报表">
+    <input type="checkbox" set='set_tab("repurchase_bill","购货退货对账单","/index/main/repurchase_bill");' lay-filter="often" title="购货退货对账单">
+    <input type="checkbox" set='set_tab("opurchase","采购订单","/index/main/opurchase");' lay-filter="often" title="采购订单">
+    <input type="checkbox" set='set_tab("opurchase_form","采购订单报表","/index/main/opurchase_form");' lay-filter="often" title="采购订单报表">
+    <input type="checkbox" set='set_tab("orpurchase","采购入库单","/index/main/orpurchase");' lay-filter="often" title="采购入库单">
+    <input type="checkbox" set='set_tab("rpurchase_form","采购入库单报表","/index/main/rpurchase_form");' lay-filter="often" title="采购入库单报表">
+    <input type="checkbox" set='set_tab("rpurchase_bill","采购入库对账单","/index/main/rpurchase_bill");' lay-filter="often" title="采购入库对账单">
+    <fieldset class="layui-elem-field layui-field-title">
+      <legend>销货相关</legend>
+    </fieldset>
+    <input type="checkbox" set='set_tab("sale","销货单","/index/main/sale");' lay-filter="often" title="销货单">
+    <input type="checkbox" set='set_tab("sale_form","销货单报表","/index/main/sale_form");'  lay-filter="often" title="销货单报表">
+    <input type="checkbox" set='set_tab("sale_bill","销货对账单","/index/main/sale_bill");'  lay-filter="often" title="销货对账单">
+    <input type="checkbox" set='set_tab("resale","销货退货单","/index/main/resale");'  lay-filter="often" title="销货退货单">
+    <input type="checkbox" set='set_tab("resale_form","销货退货单报表","/index/main/resale_form");'  lay-filter="often" title="销货退货单报表">
+    <input type="checkbox" set='set_tab("resale_bill","销货退货对账单","/index/main/resale_bill");'  lay-filter="often" title="销货退货对账单">
+    
+    <div class="cashier_info">
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>零售相关</legend>
+        </fieldset>
+        <input type="checkbox" set='window.open("/index/main/cashier");'  lay-filter="often" title="收银台">
+        <input type="checkbox" set='set_tab("cashier_form","零售单报表","/index/main/cashier_form");'  lay-filter="often" title="零售单报表">
+        <input type="checkbox" set='set_tab("recashier","零售退货单","/index/main/recashier");'  lay-filter="often" title="零售退货单">
+        <input type="checkbox" set='set_tab("recashier_form","零售退货单报表","/index/main/recashier_form");'  lay-filter="often" title="零售退货单报表">
+        <input type="checkbox" set='set_tab("itemorder","服务订单","/index/main/itemorder");'  lay-filter="often" title="服务订单">
+        <input type="checkbox" set='set_tab("itemorder_form","服务订单报表","/index/main/itemorder_form");'  lay-filter="often" title="服务订单报表">
+        <input type="checkbox" set='set_tab("itemorder_bill","服务对账单","/index/main/itemorder_bill");'  lay-filter="often" title="服务对账单">
+        <input type="checkbox" set='set_tab("eft","积分兑换单","/index/main/eft");'  lay-filter="often" title="积分兑换单">
+        <input type="checkbox" set='set_tab("eft_form","服务订单报表","/index/main/eft_form");'  lay-filter="often" title="积分兑换单报表">
+    </div>
+    <fieldset class="layui-elem-field layui-field-title">
+      <legend>仓库相关</legend>
+    </fieldset>
+    <input type="checkbox" set='set_tab("room","库存查询","/index/main/room");'  lay-filter="often" title="库存查询">
+    <input type="checkbox" set='set_tab("room_check","库存盘点","/index/main/room_check");'  lay-filter="often" title="库存盘点">
+    <input type="checkbox" set='set_tab("room_warning","库存预警","/index/main/room_warning");'  lay-filter="often" title="库存预警">
+    <input type="checkbox" set='set_tab("allocation","调拨单","/index/main/allocation");'  lay-filter="often" title="调拨单">
+    <input type="checkbox" set='set_tab("otpurchase","其他入库单","/index/main/otpurchase");'  lay-filter="often" title="其他入库单">
+    <input type="checkbox" set='set_tab("otpurchase_form","其他入库单报表","/index/main/otpurchase_form");'  lay-filter="often" title="其他入库单报表">
+    <input type="checkbox" set='set_tab("otsale","其他出库单","/index/main/otsale");'  lay-filter="often" title="其他出库单">
+    <input type="checkbox" set='set_tab("otsale_form","其他出库单报表","/index/main/otsale_form");'  lay-filter="often" title="其他出库单报表">
+    
+    <fieldset class="layui-elem-field layui-field-title">
+      <legend>仓库相关</legend>
+    </fieldset>
+    <input type="checkbox" set='set_tab("gather","收款单","/index/main/gather");'  lay-filter="often" title="收款单">
+    <input type="checkbox" set='set_tab("gather_form","收款单报表","/index/main/gather_form");'  lay-filter="often" title="收款单报表">
+    <input type="checkbox" set='set_tab("payment","付款单","/index/main/payment");'  lay-filter="often" title="付款单">
+    <input type="checkbox" set='set_tab("payment_form","付款单报表","/index/main/payment_form");'  lay-filter="often" title="付款单报表">
+    <input type="checkbox" set='set_tab("otgather","其他收入单","/index/main/otgather");'  lay-filter="often" title="其他收入单">
+    <input type="checkbox" set='set_tab("otgather_form","其他收入单报表","/index/main/otgather_form");'  lay-filter="often" title="其他收入单报表">
+    <input type="checkbox" set='set_tab("otpayment","其他支出单","/index/main/otpayment");'  lay-filter="often" title="其他支出单">
+    <input type="checkbox" set='set_tab("otpayment_form","其他支出单报表","/index/main/otpayment_form");'  lay-filter="often" title="其他支出单报表">
+    
+    <fieldset class="layui-elem-field layui-field-title">
+      <legend>基础资料</legend>
+    </fieldset>
+    <input type="checkbox" set='set_tab("customer","客户管理","/index/main/customer");'  lay-filter="often" title="客户管理">
+    <input type="checkbox" set='set_tab("supplier","供应商管理","/index/main/supplier");'  lay-filter="often" title="供应商管理">
+    <input type="checkbox" set='set_tab("goods","商品管理","/index/main/goods");'  lay-filter="often" title="商品管理">
+    <input type="checkbox" set='set_tab("warehouse","仓库管理","/index/main/warehouse");'  lay-filter="often" title="仓库管理">
+    <input type="checkbox" set='set_tab("account","资金账户","/index/main/account");'  lay-filter="often" title="资金账户">
+    <input type="checkbox" set='set_tab("item","服务管理","/index/main/item");'  lay-filter="often" title="服务管理">
+    <fieldset class="layui-elem-field layui-field-title">
+      <legend>辅助资料</legend>
+    </fieldset>
+    <input type="checkbox" set='set_tab("goodsclass","商品类别","/index/main/goodsclass");'  lay-filter="often" title="商品类别">
+    <input type="checkbox" set='set_tab("unit","计量单位","/index/main/unit");'  lay-filter="often" title="计量单位">
+    <input type="checkbox" set='set_tab("brand","品牌管理","/index/main/brand");'  lay-filter="often" title="品牌管理">
+    <input type="checkbox" set='set_tab("code","条码管理","/index/main/code");'  lay-filter="often" title="条码管理">
+    <input type="checkbox" set='set_tab("attribute","辅助属性","/index/main/attribute");'  lay-filter="often" title="辅助属性">
+    <input type="checkbox" set='set_tab("often","常用功能","/index/main/often");'  lay-filter="often" title="常用功能">
+    
+    <fieldset class="layui-elem-field layui-field-title">
+      <legend>数据报表</legend>
+    </fieldset>
+    <input type="checkbox" set='set_tab("arrears_form","往来单位欠款表","/index/main/arrears_form");'  lay-filter="often" title="往来单位欠款表">
+    <input type="checkbox" set='set_tab("profit_form","销售利润表","/index/main/profit_form");'  lay-filter="often" title="销售利润表">
+    
+    <fieldset class="layui-elem-field layui-field-title">
+      <legend>高级设置</legend>
+    </fieldset>
+    <input type="checkbox" set='set_tab("sys","系统参数","/index/main/sys");'  lay-filter="often" title="系统参数">
+    <input type="checkbox" set='set_tab("user","职员管理","/index/main/user");'  lay-filter="often" title="职员管理">
+    <input type="checkbox" set='set_tab("db_backup","数据备份","/index/main/db_backup");'  lay-filter="often" title="数据备份">
+    <input type="checkbox" set='set_tab("root","权限设置","/index/main/root");'  lay-filter="often" title="权限设置">
+    <input type="checkbox" set='set_tab("auth","数据授权","/index/main/auth");'  lay-filter="often" title="数据授权">
+    <input type="checkbox" set='set_tab("log","操作日志","/index/main/log");'  lay-filter="often" title="操作日志">
+</div>
+<script type="text/javascript" charset="utf-8">
+    var cashier_type={empty name='sys.info.cashier'}false{else/}true{/empty};
+    var often_arr={php}echo json_encode($info);{/php};
+    //处理选中
+    for (var i = 0; i < often_arr.length; i++) {
+        $('.show_box input[title="'+often_arr[i].name+'"]').attr('checked',true);
+    }
+</script>
+<script language="javascript" src="/skin/js/public/base64.js"></script>
+<script src="/skin/js/main/often.js" type="text/javascript" charset="utf-8"></script>
+{/block}
