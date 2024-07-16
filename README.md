@@ -14,8 +14,8 @@ http://v5.yimiaonet.com/ 帐号：admin 密码：admin888
 ##  V6开源版地址
 [https://gitee.com/yimiaoOpen/nodcloud](https://gitee.com/yimiaoOpen/nodcloud)
 
-##  另有V7全新商业版
-https://erp.nodcloud.com/ V7全新商业版（V7版是付费的 售价288起） 采用tp+vue开发，速度更流畅，功能更齐全。
+##  另有V7开源版
+[V7开源版](https://gitee.com/diankeyun/erp-community)
 
 ##  联系我们
 官网qq群：
