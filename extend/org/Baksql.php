@@ -200,6 +200,7 @@ class Baksql {
     //还原数据库
     public function restore($filename = '')
     {
+        $filename = basename($filename);
         $path=$this->config['path'].$filename;
         if (!file_exists($path))
         {
@@ -254,6 +255,7 @@ class Baksql {
      * @return array|mixed|string
      */
     public function downloadFile($fileName) {
+        $fileName = basename($fileName);
         $fileName=$this->config['path'].$fileName;
         if (file_exists($fileName)){
             ob_end_clean();
@@ -319,6 +321,7 @@ class Baksql {
         return array_reverse($FileAndFolderAyy);//返回反转数组
     }
     public function delfilename($filename){
+        $filename = basename($filename);
         $path=$this->config['path'].$filename;          
         if (@unlink($path)) {return 'success';}
     }
